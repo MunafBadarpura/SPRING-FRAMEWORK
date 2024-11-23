@@ -33,7 +33,7 @@ public class HomeController {
 
     // Model way
 //    @RequestMapping("add")
-//    public String add(int num1, int num2, Model model){
+//    public String add(@RequestParam("num1") int num1,@RequestParam("num2") int num2, Model model){
 //        int result = num1 + num2;
 //        model.addAttribute("ans", result);
 //
@@ -42,7 +42,7 @@ public class HomeController {
 
     // Model and View
     @RequestMapping("add")
-    public ModelAndView add(int num1, int num2, ModelAndView mv){
+    public ModelAndView add(@RequestParam("num1") int num1, @RequestParam("num2") int num2, ModelAndView mv){
         int result = num1 + num2;
         mv.addObject("ans", result);
         mv.setViewName("add");
@@ -89,7 +89,7 @@ public class HomeController {
     }
 
     @RequestMapping("resultCalc")
-    public String homeCalc(float num1, float num2, char Char, Model model){
+    public String homeCalc(@RequestParam("num1") float num1, @RequestParam("num2") float num2, @RequestParam("Char") char Char, Model model){
 
         float ans = 0;
         int check = 0;
