@@ -15,6 +15,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 9. ModelAndView : 1)mv.addObject(attributeName, variableName)   2)mv.setViewName(viewPageName)
 10.@ModelAttribute : to accept object from http request url
 
+
+	// @RequestParam, @PathVariable , @RequestBody
 */
 
 

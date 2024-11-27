@@ -2,7 +2,7 @@ package com.munaf.SpringBootWebDemo1.controllers;
 
 import com.munaf.SpringBootWebDemo1.dto.EmployeeDto;
 import com.munaf.SpringBootWebDemo1.entities.EmployeeEntity;
-import com.munaf.SpringBootWebDemo1.repositories.EmployeeRepository;
+import com.munaf.SpringBootWebDemo1.services.EmployeeService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,10 +11,10 @@ import java.util.List;
 @RequestMapping("/employee") // parent path
 public class EmployeeController {
 
-    private final EmployeeRepository employeeRepository;
+    private final EmployeeService employeeService;
 
-    public EmployeeController(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
     }
 
     @GetMapping(path = "/getSecretMessage") // employee/getSecretMessage
@@ -23,14 +23,14 @@ public class EmployeeController {
     }
 
     @GetMapping(path = "/{empId}") // employee/{empId}
-    public EmployeeEntity getEmployee(@PathVariable Long empId){
-        return employeeRepository.findById(empId).orElse(null);
+    public EmployeeDto getEmployee(@PathVariable Long empId){
+        return employeeService.getEmployeeById(empId);
     }
 
     @GetMapping(path = "/getAllEmployee") // http://localhost:8080/employee/getEmp?age=15&name=Munaf
-    public List<EmployeeEntity> getAllEmployee(@RequestParam(required = false) Integer age,
+    public List<EmployeeDto> getAllEmployee(@RequestParam(required = false) Integer age,
                                                @RequestParam(required = false) String name){
-        return employeeRepository.findAll();
+        return employeeService.getAllEmployee();
     }
 
     @GetMapping // employee/
@@ -39,7 +39,7 @@ public class EmployeeController {
     }
 
     @PostMapping // employee/
-    public EmployeeEntity createEmployee(@RequestBody EmployeeEntity newEmployee){
-        return employeeRepository.save(newEmployee);
+    public EmployeeDto createEmployee(@RequestBody EmployeeDto newEmployee){
+        return employeeService.createEmployee(newEmployee);
     }
 }
