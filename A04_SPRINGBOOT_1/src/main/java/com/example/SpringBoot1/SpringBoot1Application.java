@@ -10,6 +10,7 @@ package com.example.SpringBoot1;
 import com.example.SpringBoot1.model.Alien;
 import com.example.SpringBoot1.model.Laptop;
 import com.example.SpringBoot1.services.LaptopService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -21,6 +22,9 @@ public class SpringBoot1Application {
 		ApplicationContext context = SpringApplication.run(SpringBoot1Application.class, args);
 //		Alien alien = context.getBean(Alien.class);
 //		alien.code();
+
+
+
 
 		LaptopService service = context.getBean(LaptopService.class);
 
