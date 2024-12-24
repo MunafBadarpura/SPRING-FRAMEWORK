@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RequestMapping("employee")
@@ -26,8 +25,8 @@ public class EmployeeController {
 
 
     @GetMapping("/health-check")
-    public String healthCheck() {
-        return "Health-Check Working...";
+    public ResponseEntity<String> healthCheck(){
+        return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 
     @GetMapping("getEmployeeById/{empId}")
@@ -67,13 +66,15 @@ public class EmployeeController {
 
     @DeleteMapping("deleteEmployeeById/{empId}")
     public ResponseEntity<Boolean> deleteEmployeeById(@PathVariable(name = "empId") Long id) {
-        Boolean gotDeleted = employeeService.deleteEmployeeById(id);
+//        Boolean gotDeleted = employeeService.deleteEmployeeById(id);
 
 //        if(gotDeleted) return new ResponseEntity<>(true, HttpStatus.OK);
 //        else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-        if(gotDeleted) return ResponseEntity.ok(true);
-        else return ResponseEntity.notFound().build();
+//        if(gotDeleted) return ResponseEntity.ok(true);
+//        else return ResponseEntity.notFound().build();
+         employeeService.deleteEmployeeById(id);
+         return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
     @PatchMapping("partialEmployeeById/{empId}")
