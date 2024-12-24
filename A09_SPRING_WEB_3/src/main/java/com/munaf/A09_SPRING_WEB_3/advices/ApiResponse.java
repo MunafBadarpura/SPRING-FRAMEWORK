@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 //hh: Hour in 12-hour format (use HH for 24-hour format with AM/PM).
 //mm: Minutes.
@@ -15,23 +16,23 @@ import java.time.LocalDateTime;
 @Data
 public class ApiResponse<T> {
 
-    @JsonFormat(pattern = "hh:mm:ss dd/MM/yyyy")
-    private LocalDateTime timestamp;
+//    @JsonFormat(pattern = "hh:mm:ss dd/MM/yyyy")
+    private String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("hh:mm:ss dd/MM/yyyy"));
     private T data;
     private ApiError error;
 
 
-    public ApiResponse(){
-        this.timestamp = LocalDateTime.now();
-    }
+//    public ApiResponse(){
+//        this.timestamp = LocalDateTime.now();
+//    }
 
     public ApiResponse(T data) {
-        this();
+//        this();
         this.data = data;
     }
 
     public ApiResponse(ApiError error) {
-        this();
+//        this();
         this.error = error;
     }
 }

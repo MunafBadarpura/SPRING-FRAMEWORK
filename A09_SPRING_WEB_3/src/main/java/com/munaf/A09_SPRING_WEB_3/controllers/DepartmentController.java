@@ -1,5 +1,6 @@
 package com.munaf.A09_SPRING_WEB_3.controllers;
 
+import com.munaf.A09_SPRING_WEB_3.configs.HealthCheck;
 import com.munaf.A09_SPRING_WEB_3.dto.DepartmentDTO;
 import com.munaf.A09_SPRING_WEB_3.exceptions.ResourceNotFoundException;
 import com.munaf.A09_SPRING_WEB_3.services.DepartmentService;
@@ -22,8 +23,8 @@ public class DepartmentController {
     }
 
     @GetMapping("/health-check")
-    public ResponseEntity<String> healthCheck(){
-        return new ResponseEntity<>("OK", HttpStatus.OK);
+    public ResponseEntity<HealthCheck> healthCheck(){
+        return new ResponseEntity<>(new HealthCheck(), HttpStatus.OK);
     }
 
     @GetMapping()

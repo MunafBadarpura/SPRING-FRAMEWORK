@@ -4,6 +4,8 @@ import com.munaf.A09_SPRING_WEB_3.annotations.EmployeeRoleAnnotation.EmployeeRol
 import com.munaf.A09_SPRING_WEB_3.annotations.PrimeNumberAnnotation.PrimeNumberValidation;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.hibernate.validator.constraints.Range;
+
 import java.time.LocalDate;
 
 @Getter
@@ -19,7 +21,7 @@ public class EmployeeDTO {
 
     @NotNull(message = "Employee age must not be null.")
     @Positive(message = "Employee age must be greater than zero.")
-    @Max(value = 80, message = "Employee age must not exceed 80 years.")
+    @Range(min = 18, max = 80, message = "Employee age must not exceed 18 to 80 years.")
     private Integer age;
 
     @NotBlank(message = "Employee email must not be blank.")

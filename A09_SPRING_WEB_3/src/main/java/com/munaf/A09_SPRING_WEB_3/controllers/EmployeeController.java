@@ -1,5 +1,6 @@
 package com.munaf.A09_SPRING_WEB_3.controllers;
 
+import com.munaf.A09_SPRING_WEB_3.configs.HealthCheck;
 import com.munaf.A09_SPRING_WEB_3.dto.EmployeeDTO;
 import com.munaf.A09_SPRING_WEB_3.exceptions.ResourceNotFoundException;
 import com.munaf.A09_SPRING_WEB_3.services.EmployeeService;
@@ -25,8 +26,8 @@ public class EmployeeController {
 
 
     @GetMapping("/health-check")
-    public ResponseEntity<String> healthCheck(){
-        return new ResponseEntity<>("OK", HttpStatus.OK);
+    public ResponseEntity<HealthCheck> healthCheck(){
+        return new ResponseEntity<>(new HealthCheck(), HttpStatus.OK);
     }
 
     @GetMapping("getEmployeeById/{empId}")
