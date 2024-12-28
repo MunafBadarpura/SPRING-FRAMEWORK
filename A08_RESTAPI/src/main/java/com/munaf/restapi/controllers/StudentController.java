@@ -4,7 +4,6 @@ import com.munaf.restapi.entities.StudentEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 
 @RestController
 @RequestMapping("/student")

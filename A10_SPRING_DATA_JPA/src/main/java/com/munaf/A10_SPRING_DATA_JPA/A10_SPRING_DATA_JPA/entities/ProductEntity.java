@@ -1,6 +1,5 @@
 package com.munaf.A10_SPRING_DATA_JPA.A10_SPRING_DATA_JPA.entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,10 +24,10 @@ import java.time.LocalDateTime;
                 // name with price should be unique like if name parle with price 20 exist so new parle with price 50 is valid
         },
         indexes = {
-                @Index(name = "sku_index", columnList = "sku")
+                @Index(name = "sku_index", columnList = "sku"),
         }
 )
-public class Product {
+public class ProductEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,7 +47,5 @@ public class Product {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
-
-
 
 }
