@@ -48,4 +48,9 @@ public class DepartmentService {
 
 
     }
+
+    public DepartmentEntity getAssignedDepartmentOfManager(Long employeeId) {
+        Optional<EmployeeEntity> employeeEntity = employeeRepository.findById(employeeId);
+        return employeeEntity.map(employee -> employee.getManagedDepartment()).orElse(null);
+    }
 }

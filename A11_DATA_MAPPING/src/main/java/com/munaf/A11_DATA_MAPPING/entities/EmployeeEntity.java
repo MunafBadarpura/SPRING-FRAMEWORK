@@ -20,7 +20,7 @@ public class EmployeeEntity {
     private String name;
 
     @OneToOne(mappedBy = "manager")
-    @JsonIgnore // do not render in responce
+    @JsonIgnore
     private DepartmentEntity managedDepartment;
 
 }
