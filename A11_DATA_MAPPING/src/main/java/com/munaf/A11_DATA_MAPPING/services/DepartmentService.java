@@ -30,27 +30,66 @@ public class DepartmentService {
 
 
     public DepartmentEntity assignManagerToDepartment(Long departmentId, Long employeeId) {
-        Optional<DepartmentEntity> departmentEntity = departmentRepository.findById(departmentId);
-        Optional<EmployeeEntity> employeeEntity = employeeRepository.findById(employeeId);
+        Optional<DepartmentEntity> OptionalDepartmentEntity = departmentRepository.findById(departmentId);
+        Optional<EmployeeEntity> OptionalEmployeeEntity = employeeRepository.findById(employeeId);
 
-        if (departmentEntity.isPresent() && employeeEntity.isPresent()) {
-                departmentEntity.get().setManager(employeeEntity.get());
-                return departmentRepository.save(departmentEntity.get());
+        if (OptionalDepartmentEntity.isPresent() && OptionalEmployeeEntity.isPresent()) {
+            DepartmentEntity departmentEntity = OptionalDepartmentEntity.get();
+            EmployeeEntity employeeEntity = OptionalEmployeeEntity.get();
+
+            departmentEntity.setManager(employeeEntity);
+            return departmentRepository.save(departmentEntity);
         }
-        return null;
+        else return null;
 
         // with lambda expression
-//        return departmentEntity.flatMap(department ->
-//            employeeEntity.map(employee -> {
+//        return OptionalDepartmentEntity.flatMap(department ->
+//            OptionalEmployeeEntity.map(employee -> {
 //                department.setManager(employee);
 //                return departmentRepository.save(department);
 //            })).orElse(null);
-
 
     }
 
     public DepartmentEntity getAssignedDepartmentOfManager(Long employeeId) {
         Optional<EmployeeEntity> employeeEntity = employeeRepository.findById(employeeId);
         return employeeEntity.map(employee -> employee.getManagedDepartment()).orElse(null);
+    }
+
+    // Second Part Code
+
+    public DepartmentEntity assignWorkerToDepartment(Long departmentId, Long employeeId) {
+        Optional<DepartmentEntity> OptionalDepartmentEntity = departmentRepository.findById(departmentId);
+        Optional<EmployeeEntity> OptionalEmployeeEntity = employeeRepository.findById(employeeId);
+
+        if (OptionalDepartmentEntity.isPresent() && OptionalEmployeeEntity.isPresent()) {
+            DepartmentEntity departmentEntity = OptionalDepartmentEntity.get();
+            EmployeeEntity employeeEntity = OptionalEmployeeEntity.get();
+
+            employeeEntity.setWorkDepartment(departmentEntity); // saving department in employee
+            employeeRepository.save(employeeEntity);
+
+            departmentEntity.getWorkers().add(employeeEntity); // saving employee in department worker list
+            return departmentEntity;
+        }
+        else return null;
+    }
+
+    public DepartmentEntity assignFreelancersToDepartment(Long departmentId, Long employeeId) {
+        Optional<DepartmentEntity> OptionalDepartmentEntity = departmentRepository.findById(departmentId);
+        Optional<EmployeeEntity> OptionalEmployeeEntity = employeeRepository.findById(employeeId);
+
+        if (OptionalDepartmentEntity.isPresent() && OptionalEmployeeEntity.isPresent()) {
+            DepartmentEntity departmentEntity = OptionalDepartmentEntity.get();
+            EmployeeEntity employeeEntity = OptionalEmployeeEntity.get();
+
+            employeeEntity.getFreelancerDepartment().add(departmentEntity);
+            employeeRepository.save(employeeEntity);
+
+            departmentEntity.getFreelancers().add(employeeEntity);
+            return departmentEntity;
+
+        }
+        else return null;
     }
 }

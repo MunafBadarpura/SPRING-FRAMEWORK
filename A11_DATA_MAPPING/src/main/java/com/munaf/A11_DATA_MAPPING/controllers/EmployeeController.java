@@ -27,9 +27,9 @@ public class EmployeeController {
         return employeeService.getEmployeeById(employeeId);
     }
 
-    @GetMapping("assignedDepartmentOfManager/{employeeId}")
-    public DepartmentEntity getAssignedDepartmentOfManager(@PathVariable Long employeeId){
-        return employeeService.getAssignedDepartmentOfManager(employeeId);
-    }
+//    @GetMapping("assignedDepartmentOfManager/{employeeId}")
+//    public DepartmentEntity getAssignedDepartmentOfManager(@PathVariable Long employeeId){
+//        return employeeService.getAssignedDepartmentOfManager(employeeId);
+//    }
 
 }
