@@ -19,8 +19,8 @@ import java.time.LocalDateTime;
 @Table(
         name = "product_table",
         uniqueConstraints = {
-                @UniqueConstraint(name = "sku_unique", columnNames = {"sku"}),
-                @UniqueConstraint(name = "name_price_unique", columnNames = {"name", "price"})
+                @UniqueConstraint(columnNames = {"sku"}),
+                @UniqueConstraint(columnNames = {"name", "price"})
                 // name with price should be unique like if name parle with price 20 exist so new parle with price 50 is valid
         },
         indexes = {

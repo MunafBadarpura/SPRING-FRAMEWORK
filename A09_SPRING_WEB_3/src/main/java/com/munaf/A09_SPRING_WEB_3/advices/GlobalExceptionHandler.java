@@ -29,12 +29,12 @@ public class GlobalExceptionHandler{
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<?>> handleInputValidationError(MethodArgumentNotValidException exception){
-        List<String> errors = exception
-                .getBindingResult()
-                .getAllErrors()
-                .stream()
-                .map(error -> error.getDefaultMessage())
-                .collect(Collectors.toList());
+            List<String> errors = exception
+                    .getBindingResult()
+                    .getAllErrors()
+                    .stream()
+                    .map(error -> error.getDefaultMessage())
+                    .collect(Collectors.toList());
 
         ApiError apiError = ApiError.builder()
                 .status(HttpStatus.BAD_REQUEST)
