@@ -64,6 +64,14 @@
 		</dependency>
 
 
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-envers</artifactId>
+			<version>6.6.4.Final</version>
+		</dependency>
+
+
+
 
 	</dependencies>
 

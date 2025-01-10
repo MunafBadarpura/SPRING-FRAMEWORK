@@ -1,4 +1,4 @@
-package com.munaf.A09_SPRING_WEB_3.advices;
+package com.munaf.A12_PROD_READY_FEATURE.advices;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -16,7 +16,6 @@ import java.time.format.DateTimeFormatter;
 @Data
 public class ApiResponse<T> {
 
-//    @JsonFormat(pattern = "hh:mm:ss dd/MM/yyyy")
     private LocalDateTime timestamp;
     private T data;
     private ApiError error;
