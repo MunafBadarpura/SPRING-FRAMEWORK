@@ -24,11 +24,11 @@ class A12ProdReadyFeatureApplicationTests {
 //		System.out.println(employeeDTO);
 //	}
 //
-//	@Test
-//	void getAllEmployees(){
-//		List<EmployeeDTO> employeeDTOList = employeeClient.getAllEmployee();
-//		System.out.println(employeeDTOList);
-//	}
+	@Test
+	void getAllEmployees(){
+		List<EmployeeDTO> employeeDTOList = employeeClient.getAllEmployee();
+		System.out.println(employeeDTOList);
+	}
 //
 //	@Test
 //	void createNewEmployee(){
@@ -45,19 +45,19 @@ class A12ProdReadyFeatureApplicationTests {
 //		System.out.println(updatedEmployee);
 //	}
 
-	@Test
-	void deleteEmployeeById(){
-		Long employeeId = 852L;
-		Boolean isEmployeeDeleted = employeeClient.deleteEmployeeById(employeeId);
-		System.out.println(isEmployeeDeleted);
-	}
-
-	// error example
-	@Test
-	void createNewEmployee(){
-		EmployeeDTO employeeDTO = new EmployeeDTO("MUNAFF", 2, "createy@gmail.com", LocalDate.of(2025, 01,10), true, "ADMIN", 20000D);
-		EmployeeDTO createdEmployee = employeeClient.createNewEmployee(employeeDTO);
-		System.out.println(createdEmployee);
-	}
+//	@Test
+//	void deleteEmployeeById(){
+//		Long employeeId = 852L;
+//		Boolean isEmployeeDeleted = employeeClient.deleteEmployeeById(employeeId);
+//		System.out.println(isEmployeeDeleted);
+//	}
+//
+//	// error example
+//	@Test
+//	void createNewEmployee(){
+//		EmployeeDTO employeeDTO = new EmployeeDTO("MUNAFF", 2, "createy@gmail.com", LocalDate.of(2025, 01,10), true, "ADMIN", 20000D);
+//		EmployeeDTO createdEmployee = employeeClient.createNewEmployee(employeeDTO);
+//		System.out.println(createdEmployee);
+//	}
 
 }

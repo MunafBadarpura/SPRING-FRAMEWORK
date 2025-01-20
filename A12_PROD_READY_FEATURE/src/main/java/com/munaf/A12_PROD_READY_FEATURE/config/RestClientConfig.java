@@ -1,5 +1,6 @@
 package com.munaf.A12_PROD_READY_FEATURE.config;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +15,7 @@ public class RestClientConfig {
     private String BASE_URL;
 
     @Bean
+    @Qualifier("EmployeeServiceRestClient")
     RestClient getEmployeeServiceRestClient(){
         return RestClient.builder()
                 .baseUrl(BASE_URL)
