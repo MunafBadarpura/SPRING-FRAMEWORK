@@ -17,7 +17,7 @@ public class PostController {
         this.postService = postService;
     }
 
-    @GetMapping("getAllPosts")
+    @GetMapping()
     public List<PostDTO> getAllPosts(){
         return postService.getAllPosts();
     }
@@ -27,7 +27,7 @@ public class PostController {
         return postService.getPostById(postId);
     }
 
-    @PostMapping("createNewPost")
+    @PostMapping()
     public PostDTO createNewPost(@RequestBody PostDTO postDTO){
         return postService.createNewPost(postDTO);
     }
