@@ -69,16 +69,18 @@ SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 @EnableWebSecurity
 public class SecurityConfig {
 
-        @Bean
-        SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-            httpSecurity
+    @Bean
+    SecurityFilterChain securityFilterChainConfig(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity
+                .csrf(csrfConfig -> csrfConfig.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/posts").permitAll() // these endpoints are not required authentication
-                        .requestMatchers("admin/**", "/posts/**").hasAnyRole("ADMIN", "MANAGER")
-                        .anyRequest().authenticated()) // any other routes are required to authenticate
-                .csrf(csrsConfig -> csrsConfig.disable())    // disable csrf
-                .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-//                .formLogin(Customizer.withDefaults()); // default login page
+                    .requestMatchers("/posts").permitAll()
+                    .requestMatchers("admin/**", "/posts/**").hasAnyRole("ADMIN", "MANAGER")
+                    .anyRequest().authenticated()
+                )
+        .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+//        .formLogin(Customizer.withDefaults());
+
         return httpSecurity.build();
     }
 
@@ -97,7 +99,6 @@ public class SecurityConfig {
                 .password(passwordEncoder().encode("user"))
                 .roles("USER")
                 .build();
-
 
         return new InMemoryUserDetailsManager(normalUser, adminUser);
     }
