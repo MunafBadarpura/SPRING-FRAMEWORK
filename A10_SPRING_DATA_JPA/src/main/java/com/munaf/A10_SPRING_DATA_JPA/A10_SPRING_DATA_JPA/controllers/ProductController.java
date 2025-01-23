@@ -20,6 +20,11 @@ public class ProductController {
         this.productRepository = productRepository;
     }
 
+    @GetMapping("/check")
+    public String check() {
+        return "CHECK IS WORKING";
+    }
+
 //    @GetMapping("/")
 //    public List<ProductEntity> getAllProductsSortedByName(){
 //        return productRepository.findByOrderByPrice();

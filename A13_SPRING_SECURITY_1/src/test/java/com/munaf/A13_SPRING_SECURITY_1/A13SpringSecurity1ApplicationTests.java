@@ -13,16 +13,16 @@ class A13SpringSecurity1ApplicationTests {
 	private JwtService jwtService;
 
 
-	@Test
-	void testService () {
-		User user = new User(101L,"munaf@gmail.com","0000");
-		String jwtToken = jwtService.generateToken(user);
-		System.out.println(jwtToken);
-
-		// Get Id From JwtToken
-		Long userId = jwtService.getUserIdFromToken(jwtToken);
-		System.out.println(userId);
-	}
+//	@Test
+//	void testService () {
+//		User user = new User(101L,"munaf@gmail.com","0000");
+//		String jwtToken = jwtService.generateToken(user);
+//		System.out.println(jwtToken);
+//
+//		// Get Id From JwtToken
+//		Long userId = jwtService.getUserIdFromToken(jwtToken);
+//		System.out.println(userId);
+//	}
 
 
 

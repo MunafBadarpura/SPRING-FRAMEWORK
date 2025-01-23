@@ -15,4 +15,11 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(apiError,  HttpStatus.NOT_FOUND);
     }
 
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiError> handlerExceptions(Exception exception){
+        ApiError apiError = new ApiError(exception.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(apiError,  HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }
