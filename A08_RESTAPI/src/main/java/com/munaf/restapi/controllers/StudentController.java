@@ -11,6 +11,12 @@ public class StudentController {
 
     HashMap<Long, StudentEntity> student = new HashMap<>();
 
+
+    @GetMapping("check")
+    public String check () {
+        return "CHECKKKKK";
+    }
+
     // get
     @GetMapping
     public HashMap<Long, StudentEntity> getAllStudent(){

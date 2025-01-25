@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    networks:
+      - my-network
+
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: 0000
+      MYSQL_DATABASE: test
+    ports:
+      - "3307:3306"
+    networks:
+        - my-network
+
+networks:
+  my-network:
+    driver: bridge
