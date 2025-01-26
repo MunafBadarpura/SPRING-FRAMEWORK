@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Notes {
+public class Notes implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
