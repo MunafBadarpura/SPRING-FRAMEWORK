@@ -47,7 +47,7 @@ public class JwtService {
         return Long.valueOf(claims.getSubject());
     }
 
-    // Complete Workflow
+    // COMPLETE WORKFLOW
     // 1. A JWT token is passed as input to the method.
     // 2. The method configures a JWT parser with the secret key to verify the token's signature.
     // 3. The token is parsed, and its signature is validated.
