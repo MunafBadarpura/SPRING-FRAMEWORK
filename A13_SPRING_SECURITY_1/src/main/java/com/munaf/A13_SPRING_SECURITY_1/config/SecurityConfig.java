@@ -1,24 +1,18 @@
 package com.munaf.A13_SPRING_SECURITY_1.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.munaf.A13_SPRING_SECURITY_1.filters.JwtAuthFilter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /*
 1. Form Login :
@@ -73,57 +67,27 @@ SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+    private final JwtAuthFilter jwtAuthFilter;
 
     @Bean
     AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-
     @Bean
     SecurityFilterChain securityFilterChainConfig(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf(csrfConfig -> csrfConfig.disable())
                 .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/posts/", "/auth/**").permitAll()
-                    .requestMatchers("/admin/**", "/posts/**").hasAnyRole("ADMIN", "MANAGER")
-                    .anyRequest().authenticated()
-                )
-        .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-//        .formLogin(Customizer.withDefaults());
+                    .requestMatchers("/error/**", "/auth/**").permitAll()
+//                  .requestMatchers("/admin/**", "/posts/**").hasAnyRole("ADMIN", "MANAGER")
+                    .anyRequest().authenticated())
+                .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+//              .formLogin(Customizer.withDefaults());
 
         return httpSecurity.build();
     }
-
-    // creating password encoder
-    @Bean
-    PasswordEncoder passwordEncoder () {
-        return new BCryptPasswordEncoder();
-    }
-
-
-    // creating in memory user for testing
-//    @Bean
-//    UserDetailsService getUser() {
-//        UserDetails adminUser = User
-//                .withUsername("admin")
-//                .password(passwordEncoder().encode("admin"))
-//                .roles("ADMIN", "MANAGER")
-//                .build();
-//
-//        UserDetails normalUser = User
-//                .withUsername("user")
-//                .password(passwordEncoder().encode("user"))
-//                .roles("USER")
-//                .build();
-//
-//        return new InMemoryUserDetailsManager(normalUser, adminUser);
-//    }
-
-
-
-
-
-
 }

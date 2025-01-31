@@ -1,5 +1,6 @@
 package com.munaf.A13_SPRING_SECURITY_1.services;
 
+import com.munaf.A13_SPRING_SECURITY_1.dto.LoginResponseDTO;
 import com.munaf.A13_SPRING_SECURITY_1.dto.SignupDTO;
 import com.munaf.A13_SPRING_SECURITY_1.dto.UserDTO;
 import com.munaf.A13_SPRING_SECURITY_1.entity.User;
@@ -20,6 +21,7 @@ import java.util.Optional;
 public class AuthService {
 
     private final UserRepository userRepository;
+    private final UserService userService;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
@@ -34,12 +36,23 @@ public class AuthService {
         return modelMapper.map(savedUser, UserDTO.class);
     }
 
-    public String loginUser(SignupDTO loginDTO) {
+    public LoginResponseDTO loginUser(SignupDTO loginDTO) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword())
         );
 
         User user = (User) authentication.getPrincipal();
-        return jwtService.generateToken(user);
+        String accessToken =  jwtService.generateAccessToken(user);
+        String refreshToken =  jwtService.generateRefreshToken(user);
+
+        return new LoginResponseDTO(user.getId(), accessToken, refreshToken);
+    }
+
+    public LoginResponseDTO refresh(String refreshToken) {
+        Long userId = jwtService.getUserIdFromToken(refreshToken);
+        User user = userService.getUserById(userId);
+
+        String accessToken = jwtService.generateAccessToken(user);
+        return new LoginResponseDTO(user.getId(), accessToken, refreshToken);
     }
 }

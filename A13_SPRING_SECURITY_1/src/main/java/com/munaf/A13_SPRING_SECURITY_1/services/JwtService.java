@@ -23,8 +23,8 @@ public class JwtService {
     }
 
 
-    // TAKES USER ENTITY AND GENERATE JWT TOKEN
-    public String generateToken(User user) {
+    // TAKES USER ENTITY AND GENERATE JWT ACCESS TOKEN
+    public String generateAccessToken(User user) {
         return Jwts.builder() // builder is used to create a token
                 .subject(user.getId().toString()) // subject is something to identify user
                 .claim("email", user.getEmail()) // claims are key-value pairs for payloads
@@ -33,6 +33,15 @@ public class JwtService {
                 .expiration(new Date(System.currentTimeMillis() + 1000*60)) // specifies the expiration timestamp of the token.
                 .signWith(getSecretKey()) // Specifies the signing key and the algorithm
                 .compact(); // returns URL-safe string.
+    }
+
+    public String generateRefreshToken(User user) {
+        return Jwts.builder()
+                .subject(user.getId().toString())
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + 1000L *60*60*24*30*6))
+                .signWith(getSecretKey())
+                .compact();
     }
 
 

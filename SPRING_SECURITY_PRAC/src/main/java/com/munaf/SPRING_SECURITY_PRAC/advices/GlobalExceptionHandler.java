@@ -1,22 +1,15 @@
-package com.munaf.A13_SPRING_SECURITY_1.advices;
+package com.munaf.SPRING_SECURITY_PRAC.advices;
 
-import com.munaf.A13_SPRING_SECURITY_1.exceptions.ResourceNotFoundException;
+
 import io.jsonwebtoken.JwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.security.core.AuthenticationException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ApiError> handlerResourceNotFoundException(ResourceNotFoundException exception){
-        ApiError apiError = new ApiError(exception.getLocalizedMessage(), HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(apiError,  HttpStatus.NOT_FOUND);
-    }
 
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ApiError> handlerAuthenticationException(AuthenticationException exception){
