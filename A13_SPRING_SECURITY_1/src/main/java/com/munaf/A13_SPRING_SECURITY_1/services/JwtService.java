@@ -28,7 +28,7 @@ public class JwtService {
         return Jwts.builder() // builder is used to create a token
                 .subject(user.getId().toString()) // subject is something to identify user
                 .claim("email", user.getEmail()) // claims are key-value pairs for payloads
-                .claim("roles", List.of("ADMIN", "USER"))
+                .claim("roles", user.getRoles().toString())
                 .issuedAt(new Date()) // specifies the timestamp when the token was issued
                 .expiration(new Date(System.currentTimeMillis() + 1000*60)) // specifies the expiration timestamp of the token.
                 .signWith(getSecretKey()) // Specifies the signing key and the algorithm

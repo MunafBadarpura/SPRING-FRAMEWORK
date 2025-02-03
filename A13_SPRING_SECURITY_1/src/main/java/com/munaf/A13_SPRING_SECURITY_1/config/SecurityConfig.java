@@ -1,11 +1,16 @@
 package com.munaf.A13_SPRING_SECURITY_1.config;
 
+import com.munaf.A13_SPRING_SECURITY_1.entity.enums.Permissions;
+import com.munaf.A13_SPRING_SECURITY_1.entity.enums.Role;
 import com.munaf.A13_SPRING_SECURITY_1.filters.JwtAuthFilter;
+import com.munaf.A13_SPRING_SECURITY_1.handlers.OAuth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -13,6 +18,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.security.Permission;
 
 /*
 1. Form Login :
@@ -68,8 +75,13 @@ SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
+
+    private static final String[] publicRoutes = {"/error/**", "/auth/**", "/posts/homepage"};
+
 
     @Bean
     AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -80,12 +92,22 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChainConfig(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf(csrfConfig -> csrfConfig.disable())
+
                 .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/error/**", "/auth/**").permitAll()
-//                  .requestMatchers("/admin/**", "/posts/**").hasAnyRole("ADMIN", "MANAGER")
+                    .requestMatchers(publicRoutes).permitAll()
+                    .requestMatchers(HttpMethod.GET,"/posts/**").permitAll()
+                    .requestMatchers(HttpMethod.POST,"/posts/**").hasAnyRole(Role.ADMIN.name(), Role.CREATOR.name())
+                        .requestMatchers(HttpMethod.POST,"/posts/**").hasAnyAuthority(Permissions.POST_CREATE.name())
+                        .requestMatchers(HttpMethod.PUT,"/posts/**").hasAnyAuthority(Permissions.POST_UPDATE.name())
+                        .requestMatchers(HttpMethod.DELETE,"/posts/**").hasAnyAuthority(Permissions.POST_DELETE.name())
                     .anyRequest().authenticated())
+
                 .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .oauth2Login(oauth2 -> oauth2
+                        .failureUrl("/login?error=true")
+                        .successHandler(oAuth2SuccessHandler)
+                );
 //              .formLogin(Customizer.withDefaults());
 
         return httpSecurity.build();

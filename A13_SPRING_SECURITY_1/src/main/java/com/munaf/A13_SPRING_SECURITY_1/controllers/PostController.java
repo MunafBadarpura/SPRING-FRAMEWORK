@@ -3,6 +3,7 @@ package com.munaf.A13_SPRING_SECURITY_1.controllers;
 
 import com.munaf.A13_SPRING_SECURITY_1.dto.PostDTO;
 import com.munaf.A13_SPRING_SECURITY_1.services.PostService;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +18,12 @@ public class PostController {
         this.postService = postService;
     }
 
+    @GetMapping("/homepage")
+    public String HomePage(){
+        return "You Are Successfully Logged In";
+    }
+
+    @Secured({"ROLE_ADMIN", "ROLE_CREATOR", "ROLE_USER"})
     @GetMapping()
     public List<PostDTO> getAllPosts(){
         return postService.getAllPosts();

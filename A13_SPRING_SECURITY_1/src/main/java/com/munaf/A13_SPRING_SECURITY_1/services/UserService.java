@@ -31,6 +31,14 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found with id :  " + userId));
     }
 
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElse(null);
+    }
+
+    public User save(User newUser) {
+        return userRepository.save(newUser);
+    }
+
 /*
     UserDetailsService interface, which is part of the Spring Security framework.
     It is primary purpose is to load user

@@ -6,6 +6,7 @@ import com.munaf.SPRING_SECURITY_PRAC.services.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +32,11 @@ public class AuthController {
     @PostMapping("/refresh")
     public LoginResponseDTO refresh(HttpServletRequest request) {
         return authService.refresh(request);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletRequest request) {
+        return ResponseEntity.ok(authService.logout(request));
     }
 
 }

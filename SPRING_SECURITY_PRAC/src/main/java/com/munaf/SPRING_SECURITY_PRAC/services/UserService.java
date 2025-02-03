@@ -25,4 +25,12 @@ public class UserService implements UserDetailsService {
             return userRepo.findById(userId)
                     .orElseThrow(() -> new BadCredentialsException("User Not Found with : " +userId));
     }
+
+    public UserEntity getUserByEmail(String userEmail) {
+        return userRepo.findByEmail(userEmail).orElse(null);
+    }
+
+    public UserEntity save(UserEntity user) {
+        return userRepo.save(user);
+    }
 }

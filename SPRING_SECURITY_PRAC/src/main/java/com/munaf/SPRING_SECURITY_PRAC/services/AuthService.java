@@ -27,6 +27,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final SessionService sessionService;
 
 
     public UserEntity signup(UserEntity userEntity) {
@@ -45,6 +46,7 @@ public class AuthService {
         UserEntity user = (UserEntity) authentication.getPrincipal();
         String accessToken = jwtService.accessToken(user);
         String refreshToken = jwtService.refreshToken(user);
+        sessionService.generateSession(user, refreshToken);
 
         Cookie cookie = new Cookie("refreshToken", refreshToken);
         cookie.setHttpOnly(true);
@@ -60,11 +62,22 @@ public class AuthService {
                 .map(cookie -> cookie.getValue())
                 .findAny().orElseThrow(() -> new AuthenticationServiceException("Refresh Token Is Invalid"));
 
+        sessionService.validateSession(refreshToken);
         Long userId = jwtService.userIdFromJwtToken(refreshToken);
         UserEntity user = userService.getUserById(userId);
         String accessToken = jwtService.accessToken(user);
 
         return new LoginResponseDTO(user.getId(), accessToken, refreshToken);
+    }
+
+    public String logout(HttpServletRequest request) {
+        String refreshToken = Arrays.stream(request.getCookies())
+                .filter(cookie -> cookie.getName().equals("refreshToken"))
+                .map(cookie -> cookie.getValue())
+                .findFirst()
+                .orElseThrow(() -> new AuthenticationServiceException("RefreshToken Not Valid In Cookies"));
+
+        return sessionService.deleteSession(refreshToken);
     }
 }
 
