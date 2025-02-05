@@ -97,9 +97,9 @@ public class SecurityConfig {
                     .requestMatchers(publicRoutes).permitAll()
                     .requestMatchers(HttpMethod.GET,"/posts/**").permitAll()
                     .requestMatchers(HttpMethod.POST,"/posts/**").hasAnyRole(Role.ADMIN.name(), Role.CREATOR.name())
-                        .requestMatchers(HttpMethod.POST,"/posts/**").hasAnyAuthority(Permissions.POST_CREATE.name())
-                        .requestMatchers(HttpMethod.PUT,"/posts/**").hasAnyAuthority(Permissions.POST_UPDATE.name())
-                        .requestMatchers(HttpMethod.DELETE,"/posts/**").hasAnyAuthority(Permissions.POST_DELETE.name())
+                    .requestMatchers(HttpMethod.POST,"/posts/**").hasAnyAuthority(Permissions.POST_CREATE.name())
+                    .requestMatchers(HttpMethod.PUT,"/posts/**").hasAnyAuthority(Permissions.POST_UPDATE.name())
+                    .requestMatchers(HttpMethod.DELETE,"/posts/**").hasAnyAuthority(Permissions.POST_DELETE.name())
                     .anyRequest().authenticated())
 
                 .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

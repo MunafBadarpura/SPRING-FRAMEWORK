@@ -4,6 +4,7 @@ package com.munaf.A13_SPRING_SECURITY_1.controllers;
 import com.munaf.A13_SPRING_SECURITY_1.dto.PostDTO;
 import com.munaf.A13_SPRING_SECURITY_1.services.PostService;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +30,8 @@ public class PostController {
         return postService.getAllPosts();
     }
 
+//    @PreAuthorize("hasAnyRole('ADMIN', 'CREATOR') OR hasAnyAuthority('POST_VIEW')")
+    @PreAuthorize("@postSecurity.isAuthorOfPost(#postId)")
     @GetMapping("{postId}")
     public PostDTO getPostById(@PathVariable Long postId){
         return postService.getPostById(postId);
