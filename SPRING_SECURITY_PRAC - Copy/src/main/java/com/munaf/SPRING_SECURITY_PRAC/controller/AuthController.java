@@ -1,6 +1,7 @@
 package com.munaf.SPRING_SECURITY_PRAC.controller;
 
 import com.munaf.SPRING_SECURITY_PRAC.dtos.LoginDTO;
+import com.munaf.SPRING_SECURITY_PRAC.dtos.LoginResponseDTO;
 import com.munaf.SPRING_SECURITY_PRAC.dtos.SignupDTO;
 import com.munaf.SPRING_SECURITY_PRAC.services.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,8 +29,14 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginDTO loginDTO, HttpServletResponse response) {
+    public LoginResponseDTO login(@RequestBody LoginDTO loginDTO, HttpServletResponse response) {
         return authService.login(loginDTO, response);
+    }
+
+
+    @PostMapping("/refresh")
+    public String refresh(HttpServletRequest request) {
+        return authService.refresh(request);
     }
 
 }

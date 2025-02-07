@@ -24,11 +24,11 @@ class A12ProdReadyFeatureApplicationTests {
 //		System.out.println(employeeDTO);
 //	}
 //
-	@Test
-	void getAllEmployees(){
-		List<EmployeeDTO> employeeDTOList = employeeClient.getAllEmployee();
-		System.out.println(employeeDTOList);
-	}
+//	@Test
+//	void getAllEmployees(){
+//		List<EmployeeDTO> employeeDTOList = employeeClient.getAllEmployee();
+//		System.out.println(employeeDTOList);
+//	}
 //
 //	@Test
 //	void createNewEmployee(){

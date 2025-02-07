@@ -23,4 +23,16 @@ public class RestClientConfig {
                 .build();
     }
 
+
+    // ------------------------------
+
+    @Bean
+    @Qualifier("testingRestClient")
+    RestClient getTestingRestClient(){
+        return RestClient.builder()
+                .baseUrl("https://jsonplaceholder.typicode.com")
+//                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .build();
+    }
+
 }
