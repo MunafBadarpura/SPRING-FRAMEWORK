@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 ✅ Authentication & Authorization
 ✅ Logging & Monitoring
 ✅ Modifying Requests & Responses
-✅ Global Pre/Post Processing
+✅ Global Pre Post Processing
 
 
 => Difference Between Filters and Interceptors
