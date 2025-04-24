@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.*;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -12,25 +11,25 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @Slf4j
 class A16SpringTestingApplicationTests {
 
-	@BeforeAll // run only 1 time
-	static void setupAll() {
-		log.info("RUN BEFORE ALL");
-	}
-
-	@BeforeEach // run every time
-	void setup() {
-		log.info("RUN BEFORE EACH");
-	}
-
-	@AfterAll // run only 1 time
-	static void afterAll() {
-		log.info("RUN AFTER ALL");
-	}
-
-	@AfterEach // run every time
-	void afterEach() {
-		log.info("RUN AFTER EACH");
-	}
+//	@BeforeAll // run only 1 time
+//	static void setupAll() {
+//		log.info("RUN BEFORE ALL TEST");
+//	}
+//
+//	@BeforeEach // run every time
+//	void setup() {
+//		log.info("RUN BEFORE EACH TEST");
+//	}
+//
+//	@AfterAll // run only 1 time
+//	static void afterAll() {
+//		log.info("RUN AFTER ALL TEST");
+//	}
+//
+//	@AfterEach // run every time
+//	void afterEach() {
+//		log.info("RUN AFTER EACH TEST");
+//	}
 
 
 	@Test
@@ -58,18 +57,43 @@ class A16SpringTestingApplicationTests {
 	@Test
 	void testTwoNumbers() {
 		int a = 10, b = 5;
+		String fruit = "Apple";
 		int result = addTwoNumbers(a,b);
 //		Assertions.assertEquals(15, result); // jUnit
 		assertThat(result)
 				.isEqualTo(15)
 				.isCloseTo(20, Offset.offset(10));
 
-		assertThat("Apple")
+		assertThat(fruit)
 				.startsWith("Ap")
 				.endsWith("le")
-				.hasSize(5);
+				.hasSize(5)
+				.isNotBlank();
+
+		log.info("testTwoNumbers TEST PASSED");
 	}
 
+
+	// EXCEPTION TESTING
+
+	@Test
+	void divideTwoNumbersTest() {
+		int a = 5, b = 0;
+
+		Assertions.assertThatThrownBy(() -> divideTwoNumbers(a, b))
+				.isInstanceOf(ArithmeticException.class)
+				.isInstanceOf(RuntimeException.class) // true because it is parent of ArithmeticException
+				.hasMessage("Divide by zero");
+	}
+
+	int divideTwoNumbers(int a, int b) {
+		try {
+			return a/b;
+		}catch (ArithmeticException e) {
+			log.error("Arithmetic Exception Occurred");
+			throw new ArithmeticException("Divide by zero");
+		}
+	}
 }
 
 
