@@ -3,6 +3,7 @@ package com.munaf.A16_SPRING_TESTING.entities;
 import com.munaf.A16_SPRING_TESTING.enums.Department;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Employee {
 
     @Id

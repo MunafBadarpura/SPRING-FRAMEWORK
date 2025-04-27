@@ -1,5 +1,6 @@
 package com.munaf.quiz_service.controllers;
 
+import com.munaf.quiz_service.models.QuizResponse;
 import com.munaf.quiz_service.models.ResponseModel;
 import com.munaf.quiz_service.services.QuizService;
 import org.springframework.http.HttpStatus;

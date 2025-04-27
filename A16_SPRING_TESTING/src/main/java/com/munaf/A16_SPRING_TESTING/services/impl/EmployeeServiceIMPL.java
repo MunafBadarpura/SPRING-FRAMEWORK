@@ -2,6 +2,7 @@ package com.munaf.A16_SPRING_TESTING.services.impl;
 
 import com.munaf.A16_SPRING_TESTING.dtos.EmployeeDTO;
 import com.munaf.A16_SPRING_TESTING.entities.Employee;
+import com.munaf.A16_SPRING_TESTING.exceptions.InvalidInputException;
 import com.munaf.A16_SPRING_TESTING.exceptions.ResourceNotFoundException;
 import com.munaf.A16_SPRING_TESTING.repositories.EmployeeRepository;
 import com.munaf.A16_SPRING_TESTING.services.EmployeeService;
@@ -20,6 +21,9 @@ public class EmployeeServiceIMPL implements EmployeeService {
 
     @Override
     public EmployeeDTO createEmployee(EmployeeDTO employeeDTO) {
+        if (employeeRepository.existsByEmail(employeeDTO.getEmail())) {
+            throw new InvalidInputException("Employee already exists");
+        }
         Employee savedEmployee = employeeRepository.save(employeeDTO.employeeDTOToEmployee());
         return EmployeeDTO.employeeToEmployeeDTO(savedEmployee);
     }

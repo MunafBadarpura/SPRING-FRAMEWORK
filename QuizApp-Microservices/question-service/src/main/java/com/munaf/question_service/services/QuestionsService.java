@@ -40,7 +40,7 @@ public class QuestionsService {
     //--------
 
     public ResponseModel getQuestionsForQuiz(String category, Integer size) {
-        List<Integer> questionsIds = questionsRepository.getRandomQuestionsByCategoryWithSize(category, size);
+        List<Long> questionsIds = questionsRepository.getRandomQuestionsByCategoryWithSize(category, size);
         return CommonResponse.createResponse(questionsIds, HttpStatus.OK);
     }
 
@@ -72,7 +72,7 @@ public class QuestionsService {
 
     public ResponseModel getScore(List<QuizResponse> quizResponses) {
         int score = 0;
-        for (QuizResponse quizResponse : quizResponses) {
+            for (QuizResponse quizResponse : quizResponses) {
             QuestionEntity questionEntity = questionsRepository.findById(quizResponse.getId()).
                     orElseThrow(() -> new ResourceNotFoundException("Question Not Found With Id :" + quizResponse.getId()));
 

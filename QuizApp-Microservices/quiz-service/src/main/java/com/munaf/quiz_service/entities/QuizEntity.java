@@ -21,12 +21,7 @@ public class QuizEntity {
     private Integer questionsSize;
 
 
-    @ManyToMany
-    @JoinTable(
-            name = "question_quiz_table",
-            joinColumns = @JoinColumn(name = "quiz_id"),
-            inverseJoinColumns = @JoinColumn(name = "question_id")
-    )
-    private List<QuestionEntity> questions = new ArrayList<>();
+    @ElementCollection
+    private List<Integer> questionsIds = new ArrayList<>();
 
 }

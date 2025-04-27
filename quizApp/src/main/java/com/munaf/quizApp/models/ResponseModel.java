@@ -1,4 +1,4 @@
-package com.munaf.quizApp.entities;
+package com.munaf.quizApp.models;
 
 import lombok.Data;
 import org.springframework.http.HttpStatus;
