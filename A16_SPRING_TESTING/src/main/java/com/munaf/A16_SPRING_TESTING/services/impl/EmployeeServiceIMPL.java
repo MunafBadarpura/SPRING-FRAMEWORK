@@ -45,6 +45,7 @@ public class EmployeeServiceIMPL implements EmployeeService {
     @Override
     public EmployeeDTO updateEmployeeById(Long id, EmployeeDTO employeeDTO) {
         Employee employee = employeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
+        employee.setId(id);
         employee.setName(employeeDTO.getName());
         employee.setEmail(employeeDTO.getEmail());
         employee.setAge(employeeDTO.getAge());
@@ -56,6 +57,10 @@ public class EmployeeServiceIMPL implements EmployeeService {
 
     @Override
     public void deleteEmployeeById(Long id) {
-        employeeRepository.deleteById(id);
+        if (employeeRepository.existsById(id)) {
+            employeeRepository.deleteById(id);
+            return;
+        }
+        throw new ResourceNotFoundException("Employee not found");
     }
 }

@@ -89,6 +89,13 @@
 			<version>42.7.3</version> <!-- Or latest -->
 			<scope>runtime</scope>
 		</dependency>
+
+<!--		WebFlux for integration testing-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
