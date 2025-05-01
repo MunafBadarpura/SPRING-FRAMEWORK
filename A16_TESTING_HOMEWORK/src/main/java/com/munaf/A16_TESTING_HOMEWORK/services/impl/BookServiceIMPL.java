@@ -3,7 +3,6 @@ package com.munaf.A16_TESTING_HOMEWORK.services.impl;
 import com.munaf.A16_TESTING_HOMEWORK.dtos.BookDTO;
 import com.munaf.A16_TESTING_HOMEWORK.entities.Author;
 import com.munaf.A16_TESTING_HOMEWORK.entities.Book;
-import com.munaf.A16_TESTING_HOMEWORK.enums.BookType;
 import com.munaf.A16_TESTING_HOMEWORK.exceptions.InvalidInputException;
 import com.munaf.A16_TESTING_HOMEWORK.exceptions.ResourceNotFoundException;
 import com.munaf.A16_TESTING_HOMEWORK.repositories.AuthorRepository;
@@ -30,8 +29,7 @@ public class BookServiceIMPL implements BookService {
 
     @Override
     public BookDTO createBook(BookDTO bookDTO) {
-        Book book = bookDTO.bookDTOToBook();
-        Book savedBook = bookRepository.save(book);
+        Book savedBook = bookRepository.save(bookDTO.bookDTOToBook());
         return BookDTO.bookToBookDTO(savedBook);
     }
 
@@ -76,7 +74,7 @@ public class BookServiceIMPL implements BookService {
     public void deleteBook(Long id) {
         boolean isBookExists = bookRepository.existsById(id);
         if (!isBookExists) {
-            throw new InvalidInputException("Book not found with id: " + id);
+            throw new ResourceNotFoundException("Book not found with id: " + id);
         }
         bookRepository.deleteById(id);
     }

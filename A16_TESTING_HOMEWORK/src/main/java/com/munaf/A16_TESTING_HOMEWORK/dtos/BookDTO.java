@@ -41,9 +41,11 @@ public class BookDTO {
 
     public Book bookDTOToBook() {
         Book book = new Book();
+        book.setId(this.getId());
         book.setName(this.getName());
         book.setPrice(this.getPrice());
         book.setBookType(this.getBookType());
+        book.setPublishedDate(this.getPublishedDate());
         return book;
     }
 

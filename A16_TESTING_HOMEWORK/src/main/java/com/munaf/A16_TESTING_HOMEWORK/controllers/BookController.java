@@ -25,20 +25,17 @@ public class BookController {
 
     @PostMapping
     public ResponseEntity<BookDTO> createBook(@RequestBody BookDTO bookDTO) {
-        BookDTO createdBook = bookService.createBook(bookDTO);
-        return new ResponseEntity<>(createdBook, HttpStatus.CREATED);
+        return new ResponseEntity<>(bookService.createBook(bookDTO), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<BookDTO> getBookById(@PathVariable Long id) {
-        BookDTO bookDTO = bookService.getBookById(id);
-        return ResponseEntity.ok(bookDTO);
+        return ResponseEntity.ok(bookService.getBookById(id));
     }
 
     @GetMapping
     public ResponseEntity<List<BookDTO>> getAllBooks() {
-        List<BookDTO> books = bookService.getAllBooks();
-        return ResponseEntity.ok(books);
+        return ResponseEntity.ok(bookService.getAllBooks());
     }
 
     @GetMapping("/after-published-date/{publishedDate}")
