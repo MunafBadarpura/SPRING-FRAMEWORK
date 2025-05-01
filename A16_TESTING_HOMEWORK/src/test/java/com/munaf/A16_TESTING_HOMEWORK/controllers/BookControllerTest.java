@@ -7,7 +7,6 @@ import com.munaf.A16_TESTING_HOMEWORK.entities.Book;
 import com.munaf.A16_TESTING_HOMEWORK.enums.BookType;
 import com.munaf.A16_TESTING_HOMEWORK.repositories.AuthorRepository;
 import com.munaf.A16_TESTING_HOMEWORK.repositories.BookRepository;
-import com.munaf.A16_TESTING_HOMEWORK.services.BookService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,6 +47,7 @@ class BookControllerTest {
     @AfterEach
     void tearDown() {
         bookRepository.deleteAll();
+        authorRepository.deleteAll();
     }
 
     Author createAuthor() {
@@ -82,7 +82,6 @@ class BookControllerTest {
                 .expectStatus().isOk()
                 .expectBody()
                 .jsonPath("$.id").isNotEmpty()
-                .jsonPath("$.id").isEqualTo(1L)
                 .jsonPath("$.name").isEqualTo(testBook.getName());
 
     }
@@ -104,11 +103,11 @@ class BookControllerTest {
 
     @Test
     void testUpdateBook_whenBookIdExists_thenReturnUpdatedBookDTO() {
-        bookRepository.save(testBook);
+        Book savedBook = bookRepository.save(testBook);
         testBook.setName("CHANGED NAME");
 
         webTestClient.put()
-                .uri("api/books/{id}", 1L)
+                .uri("api/books/{id}", savedBook.getId())
                 .bodyValue(BookDTO.bookToBookDTO(testBook))
                 .exchange()
                 .expectStatus().isOk()
