@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -65,14 +66,27 @@ public class ProductController {
                                                      @RequestParam(required = false, defaultValue = "10") int size,
                                                      @RequestParam(required = false, defaultValue = "id") String sortBy
     ) {
+
+        if (pageNo < 1 || size < 1) {
+            return Map.of("error", "Invalid page or size");
+        }
+
+        List<String> allowedSortFields = List.of("id", "sku", "name", "price", "quantity", "createdAt", "updatedAt");
+        if (!allowedSortFields.contains(sortBy)) {
+            return Map.of("error", "Invalid sort field");
+        }
+
         Pageable pageable = PageRequest.of(pageNo-1, size, Sort.by(sortBy,"id","name","price"));
         Page<ProductEntity> data = productRepository.findAll(pageable);
 
-        HashMap result = new HashMap();
+        Map<String, Object> result = new LinkedHashMap<>(); // LinkedHasMap for insertion order
         result.put("data", data.getContent());
         result.put("pageNo", pageNo);
-        result.put("totalPage", data.getTotalPages());
+        result.put("totalPages", data.getTotalPages());
         result.put("totalElements", data.getTotalElements());
+        result.put("size", size);
+        result.put("sortBy", sortBy);
+
         return result;
     }
 
