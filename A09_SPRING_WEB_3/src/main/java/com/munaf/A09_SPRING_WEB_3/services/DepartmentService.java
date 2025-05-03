@@ -28,8 +28,8 @@ public class DepartmentService {
 
         return departmentEntityList
                 .stream()
-                .map(n -> mapper.map(n, DepartmentDTO.class))
-                .collect(Collectors.toList());
+                .map(departmentEntity -> mapper.map(departmentEntity, DepartmentDTO.class))
+                .toList();
     }
 
     public Optional<DepartmentDTO> getDepartmentById(Long id) {
