@@ -15,18 +15,21 @@ import java.util.Date;
 public class JwtService {
 
     @Value("${jwt.secretKey}")
-    private String secretKey;
+    private String jwtSecretKey;
 
     private SecretKey getSecretKey() {
-        return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)); // this is used to create SecretKey
+        return Keys.hmacShaKeyFor(jwtSecretKey.getBytes(StandardCharsets.UTF_8));
     }
+
 
     public String generateAccessToken(UserEntity userEntity) {
         return Jwts.builder()
-                .subject(userEntity.getId().toString())
-                .claim("email", userEntity.getEmail())
+                .subject(String.valueOf(userEntity.getId()))
+                .claim("userEmail", userEntity.getEmail())
+                .claim("roles", userEntity.getRoles())
+                .claim("tokenType", "ACCESS")
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + 1000*60*3)) // 3min
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 *10)) // 10 min
                 .signWith(getSecretKey())
                 .compact();
     }
@@ -34,22 +37,36 @@ public class JwtService {
 
     public String generateRefreshToken(UserEntity userEntity) {
         return Jwts.builder()
-                .subject(userEntity.getId().toString())
+                .subject(String.valueOf(userEntity.getId()))
+                .claim("tokenType", "REFRESH")
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + 1000L *60*60*24*30*6)) // 3min
+                .expiration(new Date(System.currentTimeMillis() + 1000L *60*60*24*30*6)) // 6 months
                 .signWith(getSecretKey())
                 .compact();
     }
 
+    public Long getUserIdFromJwtToken(String jwtToken) {
 
-    public Long getUserIdFromToken(String token) {
-        Claims claims =  Jwts.parser()
+        Claims claims = Jwts
+                .parser()
                 .verifyWith(getSecretKey())
                 .build()
-                .parseSignedClaims(token)
+                .parseSignedClaims(jwtToken)
                 .getPayload();
 
         return Long.valueOf(claims.getSubject());
     }
 
+
+    public String getTokenType(String jwtToken) {
+        Claims claims = Jwts
+                .parser()
+                .verifyWith(getSecretKey())
+                .build()
+                .parseSignedClaims(jwtToken)
+                .getPayload();
+
+        return claims.get("tokenType", String.class);
+
+    }
 }

@@ -3,6 +3,7 @@ package com.munaf.A13_SPRING_SECURITY_1.filters;
 import com.munaf.A13_SPRING_SECURITY_1.entity.User;
 import com.munaf.A13_SPRING_SECURITY_1.services.JwtService;
 import com.munaf.A13_SPRING_SECURITY_1.services.UserService;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,24 +37,29 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
         try {
-            String requestTokenHeader = request.getHeader("Authorization"); // Get the Token from the Request Header This header usually contains a token that looks like: "Bearer gfhsbfjhvfgdsvbfjh(token)"
-            String token = null;
-            Long userId = null;
-
-            if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
-                token = requestTokenHeader.split("Bearer ")[1]; // Extract the Token
-                userId = jwtService.getUserIdFromToken(token); // Get the User ID from the Token
+            final String requestHeader = request.getHeader("Authorization");
+            if (requestHeader == null || !requestHeader.startsWith("Bearer")) {
+                filterChain.doFilter(request, response);
+                return;
             }
 
-            if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) { // Check if the User ID is Valid and Authentication is Not Already Set
-                User user = userService.getUserById(userId);
-                UsernamePasswordAuthenticationToken authenticationToken =
-                        new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities()); // Create Authentication Object
+            String jwtToken = requestHeader.split("Bearer ")[1];
+            String tokenType = jwtService.getTokenType(jwtToken);
+            if (!"ACCESS".equals(tokenType)) {
+                throw new JwtException("Invalid token type: " + tokenType + ". ACCESS token required.");
+            }
+            Long userId = jwtService.getUserIdFromToken(jwtToken);
 
-                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken); // Set the Authentication in the Security Context
+            if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                User userEntity = userService.getUserById(userId);
+
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                        new UsernamePasswordAuthenticationToken(userEntity, null, userEntity.getAuthorities());
+
+                usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
 
             filterChain.doFilter(request, response);

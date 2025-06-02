@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.List;
 
 @Service
 public class JwtService {
@@ -29,6 +28,7 @@ public class JwtService {
                 .subject(user.getId().toString()) // subject is something to identify user
                 .claim("email", user.getEmail()) // claims are key-value pairs for payloads
                 .claim("roles", user.getRoles().toString())
+                .claim("tokenType", "ACCESS")
                 .issuedAt(new Date()) // specifies the timestamp when the token was issued
                 .expiration(new Date(System.currentTimeMillis() + 1000*60)) // specifies the expiration timestamp of the token.
                 .signWith(getSecretKey()) // Specifies the signing key and the algorithm
@@ -38,6 +38,7 @@ public class JwtService {
     public String generateRefreshToken(User user) {
         return Jwts.builder()
                 .subject(user.getId().toString())
+                .claim("tokenType", "REFRESH")
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + 1000L *60*60*24*30*6))
                 .signWith(getSecretKey())
@@ -54,6 +55,18 @@ public class JwtService {
                 .parseSignedClaims(token) //
                 .getPayload(); // Extracts the payload (claims) from the parsed token.
         return Long.valueOf(claims.getSubject());
+    }
+
+    public String getTokenType(String jwtToken) {
+        Claims claims = Jwts
+                .parser()
+                .verifyWith(getSecretKey())
+                .build()
+                .parseSignedClaims(jwtToken)
+                .getPayload();
+
+        return claims.get("tokenType", String.class);
+
     }
 
     // COMPLETE WORKFLOW
