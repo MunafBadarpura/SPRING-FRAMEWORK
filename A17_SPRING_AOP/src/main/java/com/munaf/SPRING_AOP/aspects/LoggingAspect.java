@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component;
 public class LoggingAspect {
 
     @Pointcut("execution(* com.munaf.SPRING_AOP.services.ProductService.*(..))")
-    private void saveProductPointcut() {};
+    private void saveProductPointcut() {}
 
 
     @Pointcut("within(com.munaf.SPRING_AOP.services.ProductService)")
-    private void allMethodsOfProductService() {};
+    private void allMethodsOfProductService() {}
 
     @Before("execution(* com.munaf.SPRING_AOP.services.ProductService.saveProduct(..))")
     public void beforeLogging() {
