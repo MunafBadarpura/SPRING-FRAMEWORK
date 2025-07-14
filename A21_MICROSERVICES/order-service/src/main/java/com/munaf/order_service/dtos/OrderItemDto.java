@@ -3,7 +3,7 @@ package com.munaf.order_service.dtos;
 import lombok.Data;
 
 @Data
-public class OrderItemRequestDto {
+public class OrderItemDto {
 
     private Long id;
 

@@ -1,6 +1,6 @@
 package com.munaf.order_service.controllers;
 
-import com.munaf.order_service.dtos.OrderRequestDto;
+import com.munaf.order_service.dtos.OrderDto;
 import com.munaf.order_service.services.OrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,25 +19,30 @@ public class OrderController {
     }
 
     @GetMapping("/check")
-    public String check() {
-        return "This is Order Service";
+    public String check(@RequestHeader("X-User-Id") Long userId) {
+        return "This is Order Service, User id : "+ userId;
     }
 
 
     @GetMapping("/{orderId}")
-    public ResponseEntity<OrderRequestDto> getOrderById(@PathVariable Long orderId) {
+    public ResponseEntity<OrderDto> getOrderById(@PathVariable Long orderId) {
         return ResponseEntity.ok(orderService.getOrderById(orderId));
     }
 
     @GetMapping()
-    public ResponseEntity<List<OrderRequestDto>> getAllOrders() {
+    public ResponseEntity<List<OrderDto>> getAllOrders() {
         return ResponseEntity.ok(orderService.getAllOrders());
     }
 
     @PostMapping("create-order")
-    public ResponseEntity<OrderRequestDto> createOrder(@RequestBody OrderRequestDto orderRequestDto) {
-        return ResponseEntity.ok(orderService.createOrder(orderRequestDto));
+    public ResponseEntity<OrderDto> createOrder(@RequestBody OrderDto orderDto) {
+        return ResponseEntity.ok(orderService.createOrder(orderDto));
     }
 
+
+    @PostMapping("shipping-order/{orderId}")
+    public ResponseEntity<OrderDto> shippingOrder(@PathVariable Long orderId) {
+        return ResponseEntity.ok(orderService.shippingOrder(orderId));
+    }
 
 }

@@ -1,3 +1,6 @@
+jwt:
+  secretKey: secretbfrewhri34y7hjlnri3489hckjsnbp9478ytrewifbcuo347tr8few7her7htudsnfiu
+
 spring:
   application:
     name: api-gateway
@@ -13,10 +16,23 @@ spring:
                 - Path=/api/v1/orders/**
               filters:
                 - StripPrefix=2 # remove api/v1 from path
+                - name: AuthenticationFilter
+                  args:
+                    enabled: true
             - id: inventory-service
               uri: lb://INVENTORY-SERVICE
               predicates:
                 - Path=/api/v1/inventory/**
+              filters:
+                - StripPrefix=2 # remove api/v1 from path
+                - name : InventoryLoggingFilter
+                - name : AuthenticationFilter
+                  args:
+                    enabled : true
+            - id: shipping-service
+              uri: lb://SHIPPING-SERVICE
+              predicates:
+                - Path=/api/v1/shipping/**
               filters:
                 - StripPrefix=2 # remove api/v1 from path
 

@@ -1,13 +1,12 @@
 package com.munaf.inventory_service.services;
 
-import com.munaf.inventory_service.dtos.OrderRequestDto;
-import com.munaf.inventory_service.dtos.OrderRequestItemDto;
+import com.munaf.inventory_service.dtos.OrderDto;
+import com.munaf.inventory_service.dtos.OrderItemDto;
 import com.munaf.inventory_service.dtos.ProductDTO;
 import com.munaf.inventory_service.entities.Product;
 import com.munaf.inventory_service.exceptions.ResourceNotFoundException;
 import com.munaf.inventory_service.repositories.ProductRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,16 +37,16 @@ public class ProductServices {
     }
 
     @Transactional
-    public Double reduceStock(OrderRequestDto orderRequestDto) {
+    public Double reduceStock(OrderDto orderDto) {
         double totalPrice = 0.0;
-        for (OrderRequestItemDto item : orderRequestDto.getItems()) {
+        for (OrderItemDto item : orderDto.getOrderItems()) {
             Long productId = item.getProductId();
             Integer quantity = item.getQuantity();
 
             Product product = productRepository.findById(productId)
                     .orElseThrow(() -> new ResourceNotFoundException("Product not found with id : " + productId));
 
-            if (product.getStock() < quantity) throw new RuntimeException("Product quantity is more");
+            if (product.getStock() < quantity) throw new RuntimeException("Product quantity is more than our quantity");
 
             product.setStock(product.getStock() - quantity);
             productRepository.save(product);

@@ -1,10 +1,9 @@
 package com.munaf.inventory_service.controllers;
 
 import com.munaf.inventory_service.clients.OrdersFeignClient;
-import com.munaf.inventory_service.dtos.OrderRequestDto;
+import com.munaf.inventory_service.dtos.OrderDto;
 import com.munaf.inventory_service.dtos.ProductDTO;
 import com.munaf.inventory_service.services.ProductServices;
-import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,8 +52,8 @@ public class ProductController {
 
 
     @PutMapping("reduce-stock")
-    public ResponseEntity<Double> reduceStock(@RequestBody OrderRequestDto orderRequestDto) {
-        return ResponseEntity.ok(productServices.reduceStock(orderRequestDto));
+    public ResponseEntity<Double> reduceStock(@RequestBody OrderDto orderDto) {
+        return ResponseEntity.ok(productServices.reduceStock(orderDto));
     }
 
 }

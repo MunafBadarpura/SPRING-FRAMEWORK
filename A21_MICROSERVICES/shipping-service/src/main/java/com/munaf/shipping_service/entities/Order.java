@@ -1,6 +1,5 @@
-package com.munaf.order_service.entities;
+package com.munaf.shipping_service.entities;
 
-import com.munaf.order_service.entities.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +19,7 @@ public class Order {
     private Double totalPrice;
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus;
+    private com.munaf.shipping_service.entities.enums.OrderStatus orderStatus;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "order")
     private List<OrderItem> orderItems;
