@@ -1,0 +1,53 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+
+option java_multiple_files = true;
+option java_package = "com.munaf.A22_GRPC_DEMO";
+option java_outer_classname = "EmployeeProto";
+
+package com.munaf.A22_GRPC_DEMO;
+
+message Employee{
+
+  int32 id = 1;
+  string name = 2;
+  int64 salary = 3;
+  bool active = 4;
+  repeated string skills = 5;
+  map<string, string> projectRoles = 6;
+  repeated string certifications = 7; // act as List, but you can handle it like a Set in Java by converting it.
+  bytes profileImage = 8;
+  EmployeeType employeeType = 9;
+  google.protobuf.Timestamp joiningDate = 10;
+  Address address = 11;
+
+}
+
+message Address {
+  string location = 1;
+}
+
+enum EmployeeType {
+  NEW = 0;
+  EXPERIENCED = 1;
+  MANAGER = 2;
+}
+
+message EmployeeRequest {
+  int32 id = 1;
+}
+
+message EmployeeListResponse {
+  repeated Employee employees = 1;
+}
+
+message Empty{
+
+}
+
+service EmployeeService{
+  // get emp by id
+  rpc getEmployeeById(EmployeeRequest) returns (Employee);
+  rpc create(Employee) returns (Employee);
+  rpc getAllEmployees(Empty) returns (EmployeeListResponse);
+}

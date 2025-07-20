@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: config-server
+
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/MunafBadarpura/ecommerece-config-server
+          username: munafbadarpura
+          password: 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
+          default-label: main
+
+
+server:
+  port: 8888
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+
+
+
+
+
+
+
+#    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

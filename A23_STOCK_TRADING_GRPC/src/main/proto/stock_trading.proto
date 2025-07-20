@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
+
+option java_multiple_files = true;
+option java_package = "com.munaf.A23_STOCK_TRADING_GRPC";
+option java_outer_classname = "StockTradingProto";
+
+package com.munaf.A23_STOCK_TRADING_GRPC;
+
+service StockTradingService{
+  rpc getStockById(StockRequest) returns (google.protobuf.Struct);
+  rpc getAllStocks(EmptyRequest) returns (google.protobuf.Struct);
+}
+
+
+message StockRequest{
+  int64 id = 1;
+}
+
+message EmptyRequest{
+
+}
