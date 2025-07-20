@@ -8,7 +8,7 @@ spring:
         git:
           uri: https://github.com/MunafBadarpura/ecommerece-config-server
           username: munafbadarpura
-          password: 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
+          password: ${GITHUB_TOKEN}
           default-label: main
 
 
@@ -20,11 +20,3 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka
 
-
-
-
-
-
-
-
-#    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
