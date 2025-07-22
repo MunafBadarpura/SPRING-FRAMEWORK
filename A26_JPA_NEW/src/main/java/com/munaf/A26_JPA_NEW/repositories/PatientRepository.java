@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-public interface PatientRepo extends JpaRepository<Patient, Long> {
+public interface PatientRepository extends JpaRepository<Patient, Long> {
 
 
     @Query("SELECT p.name as name, p.address as address, p.bloodGroup as bloodGroup FROM Patient p WHERE p.id = :id")
