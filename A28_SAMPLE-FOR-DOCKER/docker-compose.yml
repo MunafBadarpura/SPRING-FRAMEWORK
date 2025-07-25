@@ -1,0 +1,34 @@
+#version: "3.8"
+
+services:
+  sample-db: # container name
+    image: postgres:latest
+    container_name: sample-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: sample_db
+#    ports:
+#      - "5432:5432"
+    volumes:
+      - sample-db-data:/var/lib/postgresql/data
+    networks:
+      - sample-network
+
+
+  sample-service: # container name
+    image: my-spring-app:v0
+    container_name: sample-service
+    ports:
+      - "8080:8080"
+    depends_on:
+      - sample-db
+    networks:
+      - sample-network
+
+volumes:
+  sample-db-data:
+
+
+networks:
+  sample-network:
