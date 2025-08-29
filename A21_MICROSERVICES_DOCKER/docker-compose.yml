@@ -1,0 +1,122 @@
+services:
+  zipkin:
+    image: openzipkin/zipkin:latest
+    container_name: zipkin
+    ports:
+      - "9411:9411"
+    networks:
+      - ecommerece-network
+
+  order-db:
+    image: postgres
+    container_name: order-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: orderDB
+    ports:
+      - "5432:5432"
+    networks:
+      - ecommerece-network
+    volumes:
+      - order-db-data:/var/lib/postgresql/data
+
+  inventory-db:
+    image: postgres
+    container_name: inventory-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: inventoryDB
+    ports:
+      - "5433:5432"
+    networks:
+      - ecommerece-network
+    volumes:
+      - order-db-data:/var/lib/postgresql/data
+
+  shipping-db:
+    image: postgres
+    container_name: shipping-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: shippingDB
+    ports:
+      - "5434:5432"
+    networks:
+      - ecommerece-network
+    volumes:
+      - order-db-data:/var/lib/postgresql/data
+
+
+  eureka-service:
+    image: eureka-service
+    container_name: eureka-service
+    networks:
+      - ecommerece-network
+
+
+  config-server:
+    image: config-server
+    container_name: config-server
+    networks:
+      - ecommerece-network
+    depends_on:
+      - eureka-service
+
+
+  inventory-service:
+    image: inventory-service
+    container_name: inventory-service
+    networks:
+      - ecommerece-network
+    depends_on:
+      - zipkin
+      - inventory-db
+      - eureka-service
+
+
+  order-service:
+    image: order-service
+    container_name: order-service
+    networks:
+      - ecommerece-network
+    depends_on:
+      - zipkin
+      - order-db
+      - eureka-service
+
+
+  shipping-service:
+    image: shipping-service
+    container_name: shipping-service
+    networks:
+      - ecommerece-network
+    depends_on:
+      - zipkin
+      - shipping-db
+      - eureka-service
+
+  api-gateway:
+    image: api-gateway
+    container_name: api-gateway
+    networks:
+      - ecommerece-network
+    depends_on:
+      - inventory-service
+      - order-service
+      - shipping-service
+    ports:
+      - "8080:8080"
+
+
+
+networks:
+  ecommerece-network:
+
+volumes:
+  order-db-data:
+  shipping-db-data:
+  inventory-db-data:
+

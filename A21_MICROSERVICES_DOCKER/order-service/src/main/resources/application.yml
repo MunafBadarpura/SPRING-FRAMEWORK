@@ -1,0 +1,60 @@
+## RETRY CONFIG
+#resilience4j:
+#  retry:
+#    configs:
+#      myDefaultConfig:
+#        max-attempts: 3
+#        wait-duration: 5s
+#    instances:
+#      inventoryRetry:
+#        base-config: myDefaultConfig
+#      shippingOrderRetry:
+#        base-config: myDefaultConfig
+#
+## RATE-LIMITER CONFIG
+#  ratelimiter:
+#    instances:
+#      inventoryRateLimiter:
+#        limit-for-period: 1
+#        limit-refresh-period: 5s
+#        timeout-duration: 1s
+#
+## RATE-LIMITER CONFIG
+#  circuitbreaker:
+#    instances:
+#      inventoryCircuitBreaker :
+#        register-health-indicator: true
+#        sliding-window-type: COUNT_BASED
+#        sliding-window-size: 10
+#        failure-rate-threshold: 50
+#        wait-duration-in-open-state: 10000
+#        permitted-number-of-calls-in-half-open-state: 5
+#        minimum-number-of-calls: 3
+#        automatic-transition-from-open-to-half-open-enabled: true
+#
+## ADDING CIRCUIT BREAKER IN ACTUATOR
+#management:
+#  health:
+#    circuitbreakers:
+#      enabled: true
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"
+#  endpoint:
+#    health:
+#      show-details: ALWAYS
+#
+#
+#
+## HOW TO ADD COMMON PROPERTIES
+##resilience4j:
+##  retry:
+##    configs:
+##      myDefaultConfig:
+##        max-attempts: 3
+##        wait-duration: 5s
+##    instances:
+##      inventoryRetry:
+##        base-config: myDefaultConfig
+

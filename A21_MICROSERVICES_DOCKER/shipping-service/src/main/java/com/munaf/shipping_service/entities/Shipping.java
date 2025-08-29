@@ -1,24 +1,20 @@
-package com.munaf.A26_JPA_NEW.a_fileUploading.entities;
+package com.munaf.shipping_service.entities;
 
+import com.munaf.shipping_service.entities.enums.OrderStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 @Data
-public class FileUploading {
+public class Shipping {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-
-    private String type;
-
-    private String imageURL;
+    private OrderStatus orderStatus;
 
 }

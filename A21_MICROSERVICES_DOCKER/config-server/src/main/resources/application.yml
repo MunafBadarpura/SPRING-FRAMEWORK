@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: config-server
+
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/MunafBadarpura/ecommerece-config-server-docker
+          username: munafbadarpura
+          password: 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
+          default-label: main
+
+
+server:
+  port: 8888
+
+

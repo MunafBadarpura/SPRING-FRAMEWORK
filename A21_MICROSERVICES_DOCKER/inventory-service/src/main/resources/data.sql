@@ -1,0 +1,16 @@
+INSERT INTO product (title, price, stock) VALUES
+('Wireless Mouse', 499.99, 150),
+('Gaming Keyboard', 1299.50, 80),
+('USB-C Charger', 699.00, 200),
+('Noise Cancelling Headphones', 2999.00, 60),
+('Smartwatch', 4999.99, 40),
+('Portable SSD 512GB', 3999.50, 75),
+('Laptop Stand', 899.99, 120),
+('Bluetooth Speaker', 1999.00, 50),
+('4K Monitor', 15999.00, 25),
+('Webcam 1080p', 1299.00, 90),
+('Mechanical Keyboard', 3499.50, 70),
+('Wireless Earbuds', 2299.99, 100),
+('External Hard Drive 1TB', 4599.00, 40),
+('LED Desk Lamp', 599.00, 110),
+('Gaming Chair', 9999.00, 30);
