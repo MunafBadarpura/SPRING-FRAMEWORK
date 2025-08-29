@@ -8,7 +8,7 @@ spring:
         git:
           uri: https://github.com/MunafBadarpura/ecommerece-config-server-docker
           username: munafbadarpura
-          password: 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
+          password: ${GITHUB_TOKEN}
           default-label: main
 
 
