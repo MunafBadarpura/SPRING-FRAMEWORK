@@ -1,0 +1,20 @@
+spring:
+  ai:
+    chat:
+      client:
+        enabled: false
+
+
+    ollama:
+      base-url: http://192.168.214.178:11434
+      chat:
+        options:
+          model: deepseek-r1:8b
+
+    vertex:
+      ai:
+        gemini:
+          project-id: ${GEMINI_PROJECT_ID}
+          location: ${GEMINI_LOCATION}
+
+
