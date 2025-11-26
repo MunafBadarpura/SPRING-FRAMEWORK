@@ -1,6 +1,8 @@
 package com.munaf.A30_SPRING_AI_2.controllers;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.ai.vertexai.gemini.VertexAiGeminiChatOptions;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -53,4 +55,29 @@ public class ChatModelController {
                 .call()
                 .content();
     }
+
+
+    @GetMapping("/vertex/custom/{query}")
+    public String chatWithCustomVertex(@PathVariable String query) {
+//        return vertexChatClient
+//                .prompt(query)
+//                .options(VertexAiGeminiChatOptions.builder().temperature(0.7).topP(0.8).build())
+//                .call()
+//                .content();
+
+
+        Prompt prompt = new Prompt(query, VertexAiGeminiChatOptions
+                .builder()
+                .temperature(0.7)
+                .model("gemini-2.5-pro")
+                .topP(0.8)
+                .build()
+        );
+
+        return vertexChatClient
+                .prompt(prompt)
+                .call()
+                .content();
+    }
+
 }

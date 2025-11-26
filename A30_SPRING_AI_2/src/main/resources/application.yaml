@@ -17,4 +17,9 @@ spring:
           project-id: ${GEMINI_PROJECT_ID}
           location: ${GEMINI_LOCATION}
 
+logging:
+  level:
+    org.springframework.ai.chat.client.advisor: DEBUG
+
+
 
