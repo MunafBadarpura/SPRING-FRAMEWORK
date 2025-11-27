@@ -32,6 +32,8 @@ public class TokenLogAdvisors implements CallAdvisor, StreamAdvisor {
     @Override
     public Flux<ChatClientResponse> adviseStream(ChatClientRequest chatClientRequest, StreamAdvisorChain streamAdvisorChain) {
 
+        System.out.println("Stream TokenLogAdvisors is called ...");
+
         Flux<ChatClientResponse> chatClientResponseFlux = streamAdvisorChain.nextStream(chatClientRequest);
         return chatClientResponseFlux;
     }

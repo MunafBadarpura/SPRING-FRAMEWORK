@@ -4,6 +4,11 @@ spring:
       client:
         enabled: false
 
+      memory:
+        repository:
+          jdbc:
+            initialize-schema: ALWAYS
+
 
     ollama:
       base-url: http://192.168.214.178:11434
@@ -14,8 +19,23 @@ spring:
     vertex:
       ai:
         gemini:
-          project-id: ${GEMINI_PROJECT_ID}
+          project -id: ${GEMINI_PROJECT_ID}
           location: ${GEMINI_LOCATION}
+#          chat:
+#            options:
+#              model: gemini-2.5-pro
+
+
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/spring_ai
+    username: postgres
+    password: root
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
 
 logging:
   level:
