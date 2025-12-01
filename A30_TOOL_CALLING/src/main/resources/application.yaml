@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: A30_TOOL_CALLING
+
+  ai:
+    vertex:
+      ai:
+        gemini:
+          project-id: ${GEMINI_PROJECT_ID}
+          location: ${GEMINI_LOCATION}
+
+logging:
+  level:
+    org.springframework.ai.chat.client.advisor: DEBUG

@@ -1,6 +1,8 @@
 package com.munaf.A30_SPRING_AI_2.controllers;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.ai.vertexai.gemini.VertexAiGeminiChatOptions;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.http.codec.ServerSentEvent;
@@ -31,12 +33,18 @@ public class StreamResponse {
     }
 
 
-    @GetMapping(value = "/test")
-    public Flux<String> streamResponse2() {
+    @GetMapping(value = "/test/{userInputModel}")
+    public Flux<String> streamResponse2(@PathVariable String userInputModel) {
+
+        Prompt promptObject = new Prompt("give me list of 10 cricket players",
+                VertexAiGeminiChatOptions
+                        .builder()
+                        .model(userInputModel)
+                        .build()
+                );
 
         return vertexChatClient
-                .prompt()
-                .user("give me list of 10 cricket players")
+                .prompt(promptObject)
                 .stream()
                 .content();
     }

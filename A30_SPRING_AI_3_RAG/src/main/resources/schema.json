@@ -1,0 +1,208 @@
+{
+  "tables": {
+    "countries": {
+      "pk": "id",
+      "cols": "id:b,name:s,iso3:s,iso2:s,phonecode:s,capital:s,currency:s,currency_symbol:s,tld:s,native:s,region:s,subregion:s,timezones:s,latitude:d,longitude:d,emoji:s,emojiU:s,created_at:t,updated_at:t,flag:bo,wikiDataId:s"
+    },
+    "states": {
+      "pk": "id",
+      "cols": "id:b,name:s,countryID:b,country_code:s,fips_code:s,iso2:s,created_at:t,updated_at:t,flag:bo,wikiDataId:s",
+      "fk": "countryID>countries.id"
+    },
+    "cities": {
+      "pk": "id",
+      "cols": "id:b,name:s,stateID:b,countryID:b,state_code:s,country_code:s,latitude:d,longitude:d,created_at:t,updated_at:t,flag:bo,wikiDataId:s",
+      "fk": "stateID>states.id,countryID>countries.id"
+    },
+    "companyInfo": {
+      "pk": "companyId",
+      "cols": "companyId:s,name:s,gstNumber:s,panNumber:s,contactNumber:s,email:s,logoUrl:s,address:s,pinCode:i,signatureUrl:s,stampUrl:s,businessType:s,website:s,cityId:b,stateId:b,createdAt:t,updatedAt:t",
+      "fk": "cityId>cities.id,stateId>states.id"
+    },
+    "financialInfo": {
+      "pk": "financeId",
+      "cols": "financeId:s,year:i,openingBalance:d,totalAssets:d,totalLiabilities:d,revenue:d,expense:d,taxPaid:d,totalCredit:d,totalDebit:d,inCash:d,inBank:d,companyId:s,createdAt:t,updatedAt:t",
+      "fk": "companyId>companyInfo.companyId"
+    },
+    "category": {
+      "pk": "categoryId",
+      "cols": "categoryId:s,name:s,subCategory:s,status:s:Status,createdAt:t,updatedAt:t",
+      "fk": "subCategory>category.categoryId"
+    },
+    "unit": {
+      "pk": "unitId",
+      "cols": "unitId:s,name:s,shortName:s,quantityInUnit:i,status:s:Status,createdAt:t,updatedAt:t"
+    },
+    "brand": {
+      "pk": "brandId",
+      "cols": "brandId:s,name:s,status:s:Status,createdAt:t,updatedAt:t"
+    },
+    "taxAndHsn": {
+      "pk": "taxAndHsnId",
+      "cols": "taxAndHsnId:s,hsnCode:s,taxRate:d,createdAt:t,updatedAt:t"
+    },
+    "warehouse": {
+      "pk": "warehouseId",
+      "cols": "warehouseId:s,name:s,location:s,status:s:Status,createdAt:t,updatedAt:t"
+    },
+    "product": {
+      "pk": "productId",
+      "cols": "productId:s,name:s,skuCode:s,categoryId:s,unitId:s,brandId:s,taxAndHsnId:s,status:s:Status,productType:s:ProductType,createdAt:t,updatedAt:t",
+      "fk": "categoryId>category.categoryId,unitId>unit.unitId,brandId>brand.brandId,taxAndHsnId>taxAndHsn.taxAndHsnId"
+    },
+    "customer": {
+      "pk": "customerId",
+      "cols": "customerId:s,name:s,type:s:CustomerType,email:s,phone:s,address:s,cities:b,states:b,country:b,status:s:Status,openingBalance:d,createdAt:t,updatedAt:t",
+      "fk": "cities>cities.id,states>states.id,country>countries.id"
+    },
+    "supplier": {
+      "pk": "supplierId",
+      "cols": "supplierId:s,name:s,email:s,phone:s,address:s,cities:b,states:b,country:b,status:s:Status,openingBalance:d,createdAt:t,updatedAt:t",
+      "fk": "cities>cities.id,states>states.id,country>countries.id"
+    },
+    "bankAccount": {
+      "pk": "accountId",
+      "cols": "accountId:s,accountHolder:s,accountType:s:AccountType,bankName:s,ifsc:s,branch:s,openingBalance:d,status:s:Status,createdAt:t,updatedAt:t"
+    },
+    "customerLedger": {
+      "pk": "customerLedgerId",
+      "cols": "customerLedgerId:s,customerId:s,balance:d,createdAt:t,updatedAt:t",
+      "fk": "customerId>customer.customerId",
+      "rel": "customerId:1-1"
+    },
+    "supplierLedger": {
+      "pk": "supplierLedgerId",
+      "cols": "supplierLedgerId:s,supplierId:s,balance:d,createdAt:t,updatedAt:t",
+      "fk": "supplierId>supplier.supplierId",
+      "rel": "supplierId:1-1"
+    },
+    "bankAccountDetail": {
+      "pk": "detailId",
+      "cols": "detailId:s,accountId:s,details:s,createdAt:t,updatedAt:t",
+      "fk": "accountId>bankAccount.accountId"
+    },
+    "bankAccountTransaction": {
+      "pk": "transactionId",
+      "cols": "transactionId:s,bankAccountId:s,type:s:TransactionType,amount:d,createdAt:t",
+      "fk": "bankAccountId>bankAccount.accountId"
+    },
+    "bankYearlyFinance": {
+      "pk": "financeId",
+      "cols": "financeId:s,accountId:s,year:i,balance:d,createdAt:t,updatedAt:t",
+      "fk": "accountId>bankAccount.accountId"
+    },
+    "customerLedgerTransaction": {
+      "pk": "transactionId",
+      "cols": "transactionId:s,customerLedgerId:s,amount:d,type:s:TransactionType,createdAt:t",
+      "fk": "customerLedgerId>customerLedger.customerLedgerId"
+    },
+    "supplierLedgerTransaction": {
+      "pk": "transactionId",
+      "cols": "transactionId:s,supplierLedgerId:s,amount:d,type:s:TransactionType,createdAt:t",
+      "fk": "supplierLedgerId>supplierLedger.supplierLedgerId"
+    },
+    "supplierLedgerYearlyBalance": {
+      "pk": "balanceId",
+      "cols": "balanceId:s,supplierLedgerId:s,year:i,balance:d,createdAt:t",
+      "fk": "supplierLedgerId>supplierLedger.supplierLedgerId"
+    },
+    "purchaseOrder": {
+      "pk": "purchaseOrderId",
+      "cols": "purchaseOrderId:s,supplierId:s,orderDate:dt,status:s:PurchaseOrderStatus,totalAmount:d,createdAt:t,updatedAt:t",
+      "fk": "supplierId>supplier.supplierId"
+    },
+    "purchase": {
+      "pk": "purchaseId",
+      "cols": "purchaseId:s,purchaseOrderId:s,supplierId:s,warehouseId:s,purchaseDate:dt,status:s:PurchaseStatus,paymentStatus:s:PurchasePaymentStatus,totalAmount:d,createdAt:t,updatedAt:t",
+      "fk": "purchaseOrderId>purchaseOrder.purchaseOrderId,supplierId>supplier.supplierId,warehouseId>warehouse.warehouseId"
+    },
+    "purchaseOrderItem": {
+      "pk": "itemId",
+      "cols": "itemId:s,purchaseOrderId:s,productId:s,quantity:i,price:d,totalAmount:d,createdAt:t",
+      "fk": "purchaseOrderId>purchaseOrder.purchaseOrderId,productId>product.productId"
+    },
+    "purchaseItem": {
+      "pk": "itemId",
+      "cols": "itemId:s,purchaseId:s,productId:s,quantity:i,price:d,totalAmount:d,createdAt:t",
+      "fk": "purchaseId>purchase.purchaseId,productId>product.productId"
+    },
+    "stock": {
+      "pk": "stockId",
+      "cols": "stockId:s,warehouseId:s,productId:s,quantity:d,lastUpdated:t",
+      "fk": "warehouseId>warehouse.warehouseId,productId>product.productId"
+    },
+    "productionOrder": {
+      "pk": "orderId",
+      "cols": "orderId:s,productId:s,quantity:i,status:s:ProductionType,createdAt:t,updatedAt:t",
+      "fk": "productId>product.productId"
+    },
+    "productManagement": {
+      "pk": "managementId",
+      "cols": "managementId:s,productId:s,warehouseId:s,details:s,createdAt:t,updatedAt:t",
+      "fk": "productId>product.productId,warehouseId>warehouse.warehouseId"
+    },
+    "quotations": {
+      "pk": "quotationId",
+      "cols": "quotationId:s,customerId:s,quotationDate:dt,status:s:QuotationStatus,totalAmount:d,createdAt:t,updatedAt:t",
+      "fk": "customerId>customer.customerId"
+    },
+    "quotationItems": {
+      "pk": "itemId",
+      "cols": "itemId:s,quotationId:s,productId:s,quantity:i,price:d,totalAmount:d,createdAt:t",
+      "fk": "quotationId>quotations.quotationId,productId>product.productId"
+    },
+    "Proforma": {
+      "pk": "proformaId",
+      "cols": "proformaId:s,customerId:s,quotationId:s,proformaDate:dt,status:s:ProformaStatus,totalAmount:d,createdAt:t,updatedAt:t",
+      "fk": "customerId>customer.customerId,quotationId>quotations.quotationId"
+    },
+    "proformaItems": {
+      "pk": "itemId",
+      "cols": "itemId:s,proformaId:s,productId:s,quantity:i,price:d,totalAmount:d,createdAt:t",
+      "fk": "proformaId>Proforma.proformaId,productId>product.productId"
+    },
+    "debitNote": {
+      "pk": "debitNoteId",
+      "cols": "debitNoteId:s,referenceInvoiceId:s,amount:d,reason:s,createdAt:t,updatedAt:t",
+      "fk": "referenceInvoiceId>purchase.purchaseId"
+    },
+    "debitNoteItem": {
+      "pk": "itemId",
+      "cols": "itemId:s,debitNoteId:s,productId:s,quantity:i,price:d,totalAmount:d,createdAt:t",
+      "fk": "debitNoteId>debitNote.debitNoteId,productId>product.productId"
+    },
+    "voucher": {
+      "pk": "vId",
+      "cols": "vId:b,voucherType:s:VoucherType,date:dt,amount:d,description:s,createdAt:t,updatedAt:t"
+    },
+    "voucherTransaction": {
+      "pk": "voucherTransactionId",
+      "cols": "voucherTransactionId:s,voucherId:b,accountId:s,debitAmount:d,creditAmount:d,description:s,createdAt:t,updatedAt:t",
+      "fk": "voucherId>voucher.vId,accountId>bankAccount.accountId"
+    }
+  },
+  "enums": {
+    "Status": "ACTIVE,INACTIVE,DELETED",
+    "ProductType": "RAW,SEMI_FINISHED,FINISHED",
+    "CustomerType": "RETAIL,WHOLESALE",
+    "AccountType": "CASH,SAVINGS,CURRENT",
+    "TransactionType": "CREDIT,DEBIT",
+    "VoucherType": "PAYMENT,RECEIPT,JOURNAL,CONTRA,SALES,PURCHASE,CREDIT_NOTE,DEBIT_NOTE",
+    "SourceType": "PRODUCTION_ORDER,PURCHASE,SALES,CREDIT_NOTE,DEBIT_NOTE,CUSTOMER,SUPPLIER,EMPLOYEE,INCOME,EXPENSE,OTHER",
+    "PaymentMode": "CASH,BANK,UPI,WALLET,CHEQUE,CREDIT_CARD,DEBIT_CARD,OTHER,FUTURE",
+    "PaymentType": "UPI,QR,MOBILE_PAYMENT,WALLET,NET_BANKING,POS,DEBIT_CARD,CREDIT_CARD,PREPAID_CARD,IMPS,NEFT,RTGS,BANK_TRANSFER,BANK_DEPOSIT,SAVING,CURRENT,CASH,CASH_ON_DELIVERY,CHECK,DIRECT_DEBIT,AUTOPAY,VOUCHER,CREDIT_NOTE,GIFT_CARD,OTHER",
+    "ProductionType": "PLANNED,IN_PROGRESS,COMPLETED,CANCELLED",
+    "PurchaseStatus": "ACCEPTED,CANCELLED,RETURNED",
+    "PurchasePaymentStatus": "PAID,UNPAID,PARTIAL_PAID,REFUNDED",
+    "PurchaseOrderStatus": "PENDING,ACCEPTED,TRANSFER_TO_PURCHASE,CANCELLED",
+    "QuotationStatus": "DRAFT,SENT,APPROVED,REJECTED,CONVERTED_TO_PROFORMA",
+    "ProformaStatus": "DRAFT,SENT,APPROVED,CANCELLED,CONVERTED_TO_INVOICE",
+    "FinanceStatus": "ACTIVE,CANCELLED"
+  },
+  "types": {"s": "VARCHAR", "b": "BIGINT", "i": "INTEGER", "d": "DECIMAL", "t": "TIMESTAMP", "ts": "TEXT", "c": "CHAR", "si": "SMALLINT", "bo": "BOOLEAN", "dt": "DATE", "tm": "TIME"},
+  "notes": {
+    "format": "cols format: columnName:dataType or columnName:dataType:enumName",
+    "fk": "Foreign keys: localColumn>targetTable.targetColumn",
+    "rel": "Special relationships: column:1-1 for ONE_TO_ONE (optional field)"
+  }
+}

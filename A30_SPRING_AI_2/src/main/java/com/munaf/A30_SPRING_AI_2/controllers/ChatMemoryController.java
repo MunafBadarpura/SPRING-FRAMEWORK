@@ -15,6 +15,7 @@ import org.springframework.ai.vertexai.gemini.VertexAiGeminiChatOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 
@@ -47,7 +48,7 @@ public class ChatMemoryController {
 
     // call LLM
     @PostMapping("/gpt")
-    public String chatMemoryResponse2(@RequestBody PromptRequest promptRequest) {
+    public Flux<String> chatMemoryResponse2(@RequestBody PromptRequest promptRequest) {
         String userPrompt = promptRequest.getUserPrompt();
         String chatHistoryId = promptRequest.getChatHistoryId();
         Long userId = promptRequest.getUserId();
@@ -78,19 +79,34 @@ public class ChatMemoryController {
 
         // 2. call LLM
         String finalChatHistoryId = chatHistoryId;
-        String aiResponse =  vertexChatClient
+        Flux<String> aiResponse =  vertexChatClient
                 .prompt(prompt)
                 .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, finalChatHistoryId))
-                .call()
+                .stream()
                 .content();
 
-        // 3. create and save conversation
-        ChatConversation chatConversation = new ChatConversation();
-        chatConversation.setChatHistory(chatHistory);
-        chatConversation.setUserContent(userPrompt);
-        chatConversation.setAssistantContent(aiResponse);
-        chatConversation = chatConversationRepo.save(chatConversation);
+//        // 3. create and save conversation
+//        ChatConversation chatConversation = new ChatConversation();
+//        chatConversation.setChatHistory(chatHistory);
+//        chatConversation.setUserContent(userPrompt);
+//        chatConversation.setAssistantContent(aiResponse);
+//        chatConversation = chatConversationRepo.save(chatConversation);
 
+        // 4. Save conversation AFTER collecting AI response chunks
+        ChatHistory finalChatHistory = chatHistory;
+        aiResponse
+                .collectList()
+                .map(list -> String.join("", list)) // combine chunks
+                .doOnNext(fullResponse -> {
+                    ChatConversation chatConversation = new ChatConversation();
+                    chatConversation.setChatHistory(finalChatHistory);
+                    chatConversation.setUserContent(userPrompt);
+                    chatConversation.setAssistantContent(fullResponse);
+                    chatConversationRepo.save(chatConversation);
+                })
+                .subscribe();   // run async
+
+        // 5. Return streaming Flux to client
         return aiResponse;
     }
 
@@ -151,8 +167,8 @@ public class ChatMemoryController {
     public List<String> getModels() {
         return List.of(
                 "gemini-2.0-flash",
-                "gemini-2.5-pro",
-                "gemini-2.5-flash",
+                "gemini-2.5-pro", // supporting stream response
+                "gemini-2.5-flash", // supporting stream response
                 "gemini-2.5-flash-lite"
         );
     }
