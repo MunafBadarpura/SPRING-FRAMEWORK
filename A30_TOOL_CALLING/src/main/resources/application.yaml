@@ -12,3 +12,9 @@ spring:
 logging:
   level:
     org.springframework.ai.chat.client.advisor: DEBUG
+
+
+
+weather:
+  api:
+    key: ${WEATHER_API_KEY}
