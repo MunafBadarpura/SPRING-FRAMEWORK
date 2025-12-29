@@ -62,7 +62,12 @@ public class SimilaritySearchController {
     public String searchWithQaAdvisor(@PathVariable String query, @PathVariable String userId) {
 
         QuestionAnswerAdvisor questionAnswerAdvisor = QuestionAnswerAdvisor.builder(vectorStore)
-                .searchRequest(SearchRequest.builder().topK(4).similarityThreshold(0.5).build())
+                .searchRequest(SearchRequest
+                        .builder()
+                        .topK(4)
+                        .similarityThreshold(0.5)
+                        .build()
+                )
                 .build();
 
         return chatClient

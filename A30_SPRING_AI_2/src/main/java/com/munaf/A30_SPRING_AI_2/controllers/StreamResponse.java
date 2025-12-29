@@ -22,6 +22,16 @@ public class StreamResponse {
         this.vertexChatClient = vertexChatClient;
     }
 
+    @GetMapping("/simple/{prompt}")
+    public String streamResponseSimple(@PathVariable String prompt) {
+        return vertexChatClient
+                .prompt()
+                .user(prompt)
+                .call()
+                .content();
+
+    }
+
     @GetMapping("/response/{prompt}")
     public Flux<String> streamResponse(@PathVariable String prompt) {
         return vertexChatClient
