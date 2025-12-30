@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: A30_SPRING_AI_ANUJ
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/spring_ai
+    username: postgres
+    password: root
+
+  chat:
+    client:
+      enabled: false # disable default chat client according to default chatModel dependency
+
+  ai:
+    vertex:
+      ai:
+        gemini:
+          project-id: ${GEMINI_PROJECT_ID}
+          location: ${GEMINI_LOCATION}
+          chat:
+            options:
+              model: gemini-2.5-flash
+        embedding:
+          project-id: ${GEMINI_PROJECT_ID}
+          location: us-central1
+          text:
+            options:
+              model: text-embedding-004
+              auto-truncate: true
+
+
+    model:
+      embedding: vertex-ai-embedding
+
+    vectorstore:
+      qdrant:
+        host: localhost
+        port: 6334
+        collection-name: vector_store
+        use-tls: false
+        initialize-schema: true
+
+
+logging:
+  level:
+    org.springframework.ai.chat.client.advisor: DEBUG
