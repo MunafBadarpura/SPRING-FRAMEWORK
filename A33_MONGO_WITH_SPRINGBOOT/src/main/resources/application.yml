@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: A33_MONGO_WITH_SPRINGBOOT
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/mongoLearning
+      auto-index-creation: true # important - automatically create indexes based on annotations
+
+# To enable mongo query logs
+logging:
+  level:
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
