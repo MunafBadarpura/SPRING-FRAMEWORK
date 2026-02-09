@@ -1,10 +1,8 @@
 package com.munaf.user_service.controllers;
 
+import com.munaf.user_service.entity.UserEntity;
 import com.munaf.user_service.services.UserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
@@ -22,5 +20,9 @@ public class UserController {
         return userService.sendMessage(message);
     }
 
+    @PostMapping
+    public String createUser(@RequestBody UserEntity userEntity) {
+        return userService.createUser(userEntity);
+    }
 
 }
