@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: myreplicaset
+  namespace: default
+  labels:
+    app: myapp
+    key: value
+spec:
+  replicas: 3 # creates 3 replicas of the Pod defined in the template section.
+  selector:
+    matchLabels:
+      app: myapp # The selector defines how the ReplicaSet finds which Pods to manage. In this case, it will manage Pods that have the label "app" with the value "myapp".
+  template: # The template defines the desired state of the Pods that will be created by the ReplicaSet. It is similar to the Pod definition in a01_pod.yml, but it is nested under the ReplicaSet's spec.
+    metadata:
+      labels:
+        app: myapp # The labels defined here will be applied to the Pods created by the ReplicaSet. This is important for the selector to work correctly.
+    spec:
+      containers:
+        - name: myreplicacontainer
+          image: nginx:latest
+          ports: 
+            - containerPort: 80

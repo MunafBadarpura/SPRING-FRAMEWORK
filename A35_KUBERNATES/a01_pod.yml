@@ -1,0 +1,23 @@
+apiVersion: v1 
+kind: Pod # kind defines the type of Kubernetes object being created (Pod, Deployment, Service, etc.)
+metadata: # metadata contains information about the pod, such as its name and labels
+  name: myfirstpod # name of the pod
+  namespace: default # namespace defines the namespace in which the pod will be created. If not specified, it defaults to the "default" namespace.
+  labels: # you can define anythign inside labels, with key-value pairs
+    app.kubernetes.io/name: myapp
+    my-pod-name: myfirstpod
+    env: dev
+
+spec: # spec defines the desired state of the pod, including the containers that will run inside it
+  containers:
+  - name: myfirstcontainer # name of the container
+    image: nginx:latest
+    resources: # resources defines the resource requests and limits for the container
+      requests: # requests define the minimum amount of resources required for the container to run
+        memory: "64Mi"
+        cpu: "250m"
+      limits: # limits define the maximum amount of resources that the container can use
+        memory: "128Mi"
+        cpu: "500m"
+    ports: # ports defines the network ports that the container will listen on
+      - containerPort: 80
