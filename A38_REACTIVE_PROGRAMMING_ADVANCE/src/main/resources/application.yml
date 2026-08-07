@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: A38_REACTIVE_PROGRAMMING_ADVANCE
+
+
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: root
+    pool:
+      initial-size: 5
+      max-size: 20
+      max-idle-time: 30m
+
+  sql:
+    init:
+#      mode: always
+#      schema-locations: classpath:db/schema.sql
+
+
+server:
+  port: 8080
+  netty:
+    connection-timeout: 20s # Limits the duration allowed to establish the initial TCP socket connection.
+    idle-timeout: 60s # Closes the connection if no read or write operations occur for 60 seconds.

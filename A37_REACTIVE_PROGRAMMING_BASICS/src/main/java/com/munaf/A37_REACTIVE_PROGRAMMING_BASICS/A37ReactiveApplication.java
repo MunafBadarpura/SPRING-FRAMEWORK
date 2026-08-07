@@ -4,6 +4,8 @@ import com.munaf.A37_REACTIVE_PROGRAMMING_BASICS.A01_FLUX_INTRO.FluxExample1;
 import com.munaf.A37_REACTIVE_PROGRAMMING_BASICS.A01_FLUX_INTRO.FluxExample2;
 import com.munaf.A37_REACTIVE_PROGRAMMING_BASICS.A01_FLUX_INTRO.FluxExample3;
 import com.munaf.A37_REACTIVE_PROGRAMMING_BASICS.A02_OPERATORS.OperatorExample1;
+import com.munaf.A37_REACTIVE_PROGRAMMING_BASICS.A03_ERROR_HANDELING.ErrorHandlingFlux;
+import com.munaf.A37_REACTIVE_PROGRAMMING_BASICS.A03_ERROR_HANDELING.ErrorHandlingMono;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -19,6 +21,11 @@ public class A37ReactiveApplication implements CommandLineRunner {
 
 	private final OperatorExample1 operatorExample1;
 
+	private final ErrorHandlingFlux errorHandlingFlux;
+	private final ErrorHandlingMono errorHandlingMono;
+
+	private final Homework homework;
+
 	public static void main(String[] args) {
 		SpringApplication.run(A37ReactiveApplication.class, args);
 	}
@@ -29,6 +36,11 @@ public class A37ReactiveApplication implements CommandLineRunner {
 //		fluxExample2.learnReactor();
 //		fluxExample3.learnReactor();
 
-		operatorExample1.learnReactor();
+//		operatorExample1.learnReactor();
+
+//		errorHandlingFlux.learnReactor();
+//		errorHandlingMono.learnReactor();
+
+		homework.learnReactor();
 	}
 }
